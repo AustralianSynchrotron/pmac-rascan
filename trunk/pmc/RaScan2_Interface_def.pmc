@@ -1,0 +1,183 @@
+;Auto generated varMap interface mapping[]()
+;	-1	A0001	
+;From C:\P4C\tec\mc\pmacRascan\trunk\documentation\[varMap.Rascan2.WIP.xlsm]Interface on 07/Mar/2019[]()
+;	-1	A0002	
+;Fly axis accel. desired limit[EGU/s2]epics(map)
+#define	a1HLM	P2002	
+;Fly axis inner-skip accel. [EGU/s2]epics(map)
+#define	a1In	P2057	
+;Fly axis outer-skip accel. [EGU/s2]epics(map)
+#define	a1Out	P2004	
+;Inc. axis trajectory max accel.[EGU/s2]epics(map)
+#define	a2Max	P2056	
+;Inc. axis trajectory accel. Out[EGU/s2]epics(map)
+#define	a2Out	P2062	
+;Active CS number on pmac[]epics(map)
+#define	csActive	P2090	
+;X-Y scan angle[deg]epics(map)
+#define	csAngleXY	P2017	
+;X-Z scan angle[deg]epics(map)
+#define	csAngleXZ	P2009	
+;Tomo-X scan gear ratio[deg/mm]epics(map)
+#define	csGearTX	P2010	
+;Active CS status (CSSTRS)[]epics(base)
+#define	csStatus	P2091	
+;Fly axis scan starting position[EGU]epics(map)
+#define	d1Centre	P2013	
+;Fly axis inner-skip distance[EGU]epics(map)
+#define	d1In	P2052	
+;Fly axis total indent HLM[EGU]epics(map)
+#define	d1IndHLM	P2050	
+;Fly axis indent from Left[EGU]epics(map)
+#define	d1IndL	P2079	
+;Fly axis Left indent request[EGU]epics(map)
+#define	d1IndLReq	P2018	
+;Fly axis indent from Right[EGU]epics(map)
+#define	d1IndR	P2080	
+;Fly axis Right indent request[EGU]epics(map)
+#define	d1IndRReq	P2019	
+;Device indentation live switch[]epics(map)
+#define	d1IndSt	P2016	
+
+;Fly axis outer-skip band[EGU]epics(map)
+#define	d1Out	P2045	
+;Fly axis span (span)[EGU]epics(map)
+#define	d1Span	P2001	
+;Inc. axis Edge-skip distance[EGU]epics(map)
+#define	d2Edge	P2065	
+;Inc. axis inner-skip distance[EGU]epics(map)
+#define	d2In	P2053	
+;Inc. axis skip distance[EGU]epics(map)
+#define	d2Out	P2054	
+;Inc. axis scan span (span)[EGU]epics(map)
+#define	d2Span	P2048	
+;Inc. axis scan start position[EGU]epics(map)
+#define	d2Start	P2014	
+;Inc. axis line separation[EGU]epics(map)
+#define	d2Step	P2006	
+;Scan control word[]epics(base)
+#define	devCMD	P2000	
+;SkipScan fault code[]epics(base)
+#define	devError	P2055	
+;Solved flag set by midlayer[]epics(map)
+#define	devSLVD	P2011	
+;Scan state word[]epics(base)
+#define	devState	P2040	
+;Pmac internal variable[]()
+#define	dum	P2066	
+;Inner-skip accel. exceeds limits[]()
+#define	era1In	5	
+;inner-skip range non-consistent[]()
+#define	erd1In	2	
+;reserved[]()
+#define	erERROR4	4	
+;[]()
+#define	erERROR8	8	
+;No Fault[]()
+#define	erNONE	0	
+;Motion range exceeds Fly axis limits[]()
+#define	erRange1	6	
+;Motion range exceeds Inc. axis limits[]()
+#define	erRange2	7	
+;[]()
+#define	erStandby	9	
+;trajectory builder error[]()
+#define	erTrjBuilder	3	
+;Velocity parameters non-consistent[]()
+#define	erv1Delta	1	
+;Current line direction[]epics(map)
+#define	lineDir	P2049	
+;Scan line End count[]epics(map)
+#define	lineEnd	P2012	
+;Scan line pointer[]epics(map)
+#define	lineN	P2041	
+;Number of subsegments[]epics(map)
+#define	lineSubEnd	P2060	
+;subsegment counter[]epics(map)
+#define	lineSubN	P2063	
+;Pmac internal variable[]()
+#define	palpha	P2067	
+;CS specific Cos(angle)[]()
+#define	pCos	Q402	
+;Pmac internal variable[]()
+#define	pdelta	P2072	
+;CS specific axis1 resolution[]()
+#define	pE1Res	Q403	
+;CS specific axis2 resolution[]()
+#define	pE2Res	Q404	
+;CS specific Sin(angle)[]()
+#define	pSin	Q401	
+;Pmac internal variable[]()
+#define	ptau	P2073	
+;Pmac internal variable[]()
+#define	pX0	P2058	
+;Pmac internal variable[]()
+#define	pX1	P2059	
+
+;Pmac internal variable[]()
+; doNotUse	P2070, P2071
+
+;Pmac internal variable[]()
+#define d1IndTotal	P2074
+
+
+;Pmac internal variable[]()
+#define	pY0	P2068	
+;Pmac internal variable[]()
+#define	pY1	P2069	
+;[]()
+#define	stBlank	0	
+;Rascan trajectiory compiled and verified[]()
+#define	stCompiled	3	
+;Setup is being verified[]()
+#define	stReady	4	
+;rscn program terminated via CTRL[]()
+#define	stReserved	8	
+;[]()
+#define	stResetting	9	
+;Running scan[]()
+#define	stRunning	7	
+;Compiled and moved into position to start scan[]()
+#define	stSet	6	
+;Moving to begin position to start scan[]()
+#define	stSetting	5	
+;Standby, waiting for user setup[]()
+#define	stStandby	2	
+;[]()
+#define	stTerminated	1	
+;Absolute high limit for time vars[]()
+#define	tAHLM	4.095	
+;absolute low limit for time vars[]()
+#define	tALLM	0.001	
+;Edge-skip move time[s]epics(map)
+#define	tEdge	P2064	
+;Total line move time[s]epics(map)
+#define	tLine	P2039	
+;Total scan move time[s]epics(map)
+#define	tScan	P2038	
+;High limit for time vars[s]()
+#define	tHLM	4	
+;inner-skip move time[s]epics(map)
+#define	tIn	P2044	
+;Fly axis inner-skip time LLM[s]epics(map)
+#define	tInLLM	P2005	
+;Scanline middle segnment time[s]epics(map)
+#define	tMid	P2042	
+;Low limit for tMid[s]()
+#define	tMidLLM	0.05	
+;outer-skip move time[s]epics(map)
+#define	tOut	P2043	
+;Calculated overhead time per line[s]epics(map)
+#define	tOvrHd	P2081	
+;Fly axis scan velocity delta[EGU/s]epics(map)
+#define	v1Diff	P2008	
+;Fly axis line exit velocity[EGU/s]epics(map)
+#define	v1Out	P2007	
+;Fly axis line scan velocity[EGU/s]epics(map)
+#define	v1Scan	P2061	
+;Inc. axis line exit velocity[EGU/s]epics(map)
+#define	v2In	P2047	
+;Inc. axis line entry velocity[EGU/s]epics(map)
+#define	v2Out	P2046	
+;Pmac internal variable[]()
+#define	Xd1	P2051	

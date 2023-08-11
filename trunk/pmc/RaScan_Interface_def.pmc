@@ -1,0 +1,214 @@
+;SLSA MC Development & Configuration tool for TurboPMAC by Nader.Afshar@synchrotron.org.au[]
+;Header		-1	
+;Auto generated pmac definition script[]
+;Header		-1	
+;No Fault[]p
+#define	erNONE	0	
+;[]
+#define	erv1Delta	1	
+;[]
+#define	erd1In	2	
+;[]
+#define	erTrjBuilder	3	
+;[]
+#define	erERROR4	4	
+;[]
+#define	era1In	5	
+;[]
+#define	erRange1	6	
+;[]
+#define	erRange2	7	
+;[]
+#define	erERROR8	8	
+;[]
+#define	erStandby	9	
+;[]p
+#define	stBlank	0	
+;[]p
+#define	stTerminated	1	
+;Standby, waiting for user setup[]p
+#define	stStandby	2	
+;Compiling scan[]p
+#define	stCompiling	3	
+;Setup is being verified; either into Ready or back to Standby[]p
+#define	stReady	4	
+;Moving to begin position to start scan[]p
+#define	stSetting	5	
+;Compiled and moved into position to start scan[]p
+#define	stSet	6	
+;Running scan[]p
+#define	stRunning	7	
+;rscn program terminated via CTRL[]p
+#define	stReserved	8	
+;[]p
+#define	stResetting	9	
+;Pmac internal variable[s]p
+#define	tMin	0.05	
+;Pmac internal variable[s]p
+#define	tMax	4	
+;Scan control word[]gs
+#define	devCMD	P2000	
+;Fast axis span (span)[EGU]gs
+#define	d1Span	P2001	
+;Fast axis acceleration desired limit[EGU/s2]gs
+#define	a1HLM	P2002	
+;Fast axis min allowd outer-skip time[s]gs
+#define	tOutLLM	P2003	
+;Slow axis acceleration desired limit[EGU/s2]gs
+#define	a2HLM	P2004	
+;Fast axis min allowd inner-skip time[s]gs
+#define	tInLLM	P2005	
+;Slow axis line separation (step size)[EGU]gs
+#define	d2Step	P2006	
+;Fast axis line scan velocity at edges[EGU/s]gs
+#define	v1Out	P2007	
+;Fast axis line scan velocity pdelta[EGU/s]gs
+#define	v1Delta	P2008	
+;X-Z scan angle[deg]gs
+#define	csAngleXZ	P2009	
+;Tomo-X scan gear ratio[deg/mm]gs
+#define	csGearTX	P2010	
+;[]p
+;;Free		P2011	
+;End scan segment[]gs
+#define	lineEnd	P2012	
+;Fast axis scan starting position[EGU]gs
+#define	d1Centre	P2013	
+;Slow axis scan starting position[EGU]gs
+#define	d2Start	P2014	
+;Scan devState word[]g
+#define	devState	P2040	
+;Current scan segment[]gs
+#define	lineN	P2041	
+;Scanline total time including inner-skip[s]g
+#define	tMid	P2042	
+;outer-skip move time[s]g
+#define	tOut	P2043	
+;inner-skip move time[s]g
+#define	tIn	P2044	
+;Fast axis outer-skip band[EGU]g
+#define	d1Out	P2045	
+;Slow axis outer-skip velocity at return point [EGU/s]g
+#define	v2Out	P2046	
+;Slow axis line exit velocity[EGU/s]g
+#define	v2In	P2047	
+;Slow axis scan span (span)[EGU]g
+#define	d2Span	P2048	
+;Current segment direction[]g
+#define	lineDir	P2049	
+;Fast axis span actual[EGU]g
+#define	d1SpanOBS	P2050	
+;Pmac internal variable[]p
+;;;	Xd1	P2051	
+;Fast axis scan line inner-skip distance[EGU]g
+#define	d1In	P2052	
+;Slow axis inner-skip move distance[EGU]g
+#define	d2In	P2053	
+;Slow axis skip distance[EGU]g
+#define	d2Out	P2054	
+;SkipScan devError code[]g
+#define	devError	P2055	
+;Slow axis planned trajectory max accel.[EGU/s2]g
+#define	a2Max	P2056	
+;Fast axis accel. at inner skip move[EGU/s2]g
+#define	a1In	P2057	
+;Pmac internal variable[]p
+#define	pX0	P2058	
+;Pmac internal variable[]p
+#define	X1	P2059	
+;Number of subsegments[]g
+#define	lineSubEnd	P2060	
+;Fast axis line scan mid line velocity[EGU/s]g
+#define	v1Scan	P2061	
+;Fast axis acceleration actual limit[EGU/s2]g
+#define	a1Max	P2062	
+;subsegment counter[]g
+#define	lineSubN	P2063	
+;Edge-skip move time[s]g
+#define	tEdge	P2064	
+;Raster axis Edge-skip distance[EGU]g
+#define	d2Edge	P2065	
+;Pmac internal variable[]p
+#define	dum	P2066	
+;Pmac internal variable[]p
+#define	pY0	P2068	
+;Pmac internal variable[]p
+#define	pY1	P2069	
+;Sin(Ytheta)[]p
+#define pSin	P2070	
+;Cos(Ytheta)[]p
+#define pCos	P2071	
+;Pmac internal variable[]p
+#define	pdelta	P2072	
+;Pmac internal variable[]p
+#define	ptau	P2073	
+;Active CS number on pmac[]gs
+#define	csActive	P2090	
+;CS status for active CS number on pmac (CSSTRS)[]e
+#define	csStatus	P2091	
+;[]
+;		x	
+;[]
+;		x	
+;[]
+;		x	
+;[]
+;		x	
+;[]
+;		x	
+;[]
+;		x	
+;[]
+;	DIR	x	
+;[]
+;	DIR	x	
+;[]
+;	DIR	x	
+;[]
+;	DIR	x	
+;[]
+;	HLM	x	
+;[]
+;	HLM	x	
+;[]
+;	HLM	x	
+;[]
+;	HLM	x	
+;[]
+;	LLM	x	
+;[]
+;	LLM	x	
+;[]
+;	LLM	x	
+;[]
+;	LLM	x	
+;[]
+;	MRES	x	
+;[]
+;	MRES	x	
+;[]
+;	MRES	x	
+;[]
+;	MRES	x	
+;[]
+;	OFF	x	
+;[]
+;	OFF	x	
+;[]
+;	OFF	x	
+;[]
+;	OFF	x	
+;[]e
+;	stAlways	x	
+;State: coordinate system setup[]e
+;	stCSSetup	x	
+;[]e
+;	stGlobal	x	
+;[]e
+;	stInProg	x	
+;State: MONITOR[]e
+;	stMonitor	x	
+;[]e
+;	stNever	x	
+;[]e
+;	stTrajSet	x	

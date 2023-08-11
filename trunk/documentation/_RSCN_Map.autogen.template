@@ -1,0 +1,2754 @@
+### --- Auto generated varMap interface mapping
+### --- From C:\P4C\tec\mc\pmacRascan\trunk\documentation\[varMap.Rascan2.WIP.xlsm]Interface on 07/Mar/2019
+
+# PVs mapping to P2002 of type Analog
+record(ao, "$(P):A1_HLM") {
+  field(DESC, "Fly axis accel. desired limit")
+  field(OUT, "$(P):A1_HLM:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s2") field(PREC, "3")
+  field(SDIS, "$(P):A1_HLM:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):A1_HLM:RBV") {
+  field(DESC, "Fly axis accel. desired limit readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2002) $(PORT)")
+  field(SDIS, "$(P):EN_TRAJSET NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s2") field(PREC, "3")
+}
+#% autosave 0 VAL
+record(ao, "$(P):A1_HLM:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):A1_HLM:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2002) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):A1_HLM:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):A1_HLM:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):A1_HLM:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):A1_HLM:SYN") {
+ field(INPA, "$(P):A1_HLM:RBV PP")
+ field(INPB, "$(P):EN_TRAJSET CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):A1_HLM:SCD CP MS")
+ field(INPE, "$(P):A1_HLM:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):A1_HLM:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):A1_HLM PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):A1_HLM:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):A1_HLM:RBV CP MS")
+ field(INPB, "$(P):A1_HLM:SET CP")
+ field(INPC, "$(P):A1_HLM:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2057 of type Analog
+record(ao, "$(P):A1_IN") {
+  field(DESC, "Fly axis inner-skip accel. ")
+  field(OUT, "$(P):A1_IN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s2") field(PREC, "3")
+  field(SDIS, "$(P):A1_IN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):A1_IN:RBV") {
+  field(DESC, "Fly axis inner-skip accel.  readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2057) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s2") field(PREC, "3")
+}
+#% autosave 0 VAL
+record(ao, "$(P):A1_IN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):A1_IN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2057) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):A1_IN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):A1_IN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):A1_IN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):A1_IN:SYN") {
+ field(INPA, "$(P):A1_IN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):A1_IN:SCD CP MS")
+ field(INPE, "$(P):A1_IN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):A1_IN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):A1_IN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):A1_IN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):A1_IN:RBV CP MS")
+ field(INPB, "$(P):A1_IN:SET CP")
+ field(INPC, "$(P):A1_IN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2004 of type Analog
+record(ao, "$(P):A1_OUT") {
+  field(DESC, "Fly axis outer-skip accel. ")
+  field(OUT, "$(P):A1_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s2") field(PREC, "3")
+  field(SDIS, "$(P):A1_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):A1_OUT:RBV") {
+  field(DESC, "Fly axis outer-skip accel.  readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2004) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s2") field(PREC, "3")
+}
+#% autosave 0 VAL
+record(ao, "$(P):A1_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):A1_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2004) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):A1_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):A1_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):A1_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):A1_OUT:SYN") {
+ field(INPA, "$(P):A1_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):A1_OUT:SCD CP MS")
+ field(INPE, "$(P):A1_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):A1_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):A1_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):A1_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):A1_OUT:RBV CP MS")
+ field(INPB, "$(P):A1_OUT:SET CP")
+ field(INPC, "$(P):A1_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):A2_HLM") {
+  field(DESC, "Inc. axis accel. high limit")
+  field(PINI, "YES")
+  field(EGU, "EGU/s")
+  field(PREC, "3")
+  field(VAL,"0")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2056 of type Analog
+record(ao, "$(P):A2_MAX") {
+  field(DESC, "Inc. axis trajectory max accel.")
+  field(OUT, "$(P):A2_MAX:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s2") field(PREC, "3")
+  field(SDIS, "$(P):A2_MAX:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):A2_MAX:RBV") {
+  field(DESC, "Inc. axis trajectory max accel. readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2056) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s2") field(PREC, "3")
+}
+#% autosave 0 VAL
+record(ao, "$(P):A2_MAX:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):A2_MAX:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2056) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):A2_MAX:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):A2_MAX:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):A2_MAX:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):A2_MAX:SYN") {
+ field(INPA, "$(P):A2_MAX:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):A2_MAX:SCD CP MS")
+ field(INPE, "$(P):A2_MAX:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):A2_MAX:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):A2_MAX PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):A2_MAX:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):A2_MAX:RBV CP MS")
+ field(INPB, "$(P):A2_MAX:SET CP")
+ field(INPC, "$(P):A2_MAX:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2062 of type Analog
+record(ao, "$(P):A2_OUT") {
+  field(DESC, "Inc. axis trajectory accel. Out")
+  field(OUT, "$(P):A2_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s2") field(PREC, "3")
+  field(SDIS, "$(P):A2_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):A2_OUT:RBV") {
+  field(DESC, "Inc. axis trajectory accel. Out readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2062) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s2") field(PREC, "3")
+}
+#% autosave 0 VAL
+record(ao, "$(P):A2_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):A2_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2062) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):A2_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):A2_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):A2_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):A2_OUT:SYN") {
+ field(INPA, "$(P):A2_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):A2_OUT:SCD CP MS")
+ field(INPE, "$(P):A2_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):A2_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):A2_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):A2_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):A2_OUT:RBV CP MS")
+ field(INPB, "$(P):A2_OUT:SET CP")
+ field(INPC, "$(P):A2_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2090 of type Analog
+record(ao, "$(P):CS_ACTIVE") {
+  field(DESC, "Active CS number on pmac")
+  field(OUT, "$(P):CS_ACTIVE:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):CS_ACTIVE:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):CS_ACTIVE:RBV") {
+  field(DESC, "Active CS number on pmac readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2090) $(PORT)")
+  field(SDIS, "$(P):EN_ALWAYS NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):CS_ACTIVE:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):CS_ACTIVE:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2090) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):CS_ACTIVE:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):CS_ACTIVE:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):CS_ACTIVE:SYN.PACT")
+  field(INPB, "$(P):EN_CSSETUP NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):CS_ACTIVE:SYN") {
+ field(INPA, "$(P):CS_ACTIVE:RBV PP")
+ field(INPB, "$(P):EN_ALWAYS CP MS")
+ field(INPC, "$(P):EN_CSSETUP NPP")
+ field(INPD, "$(P):CS_ACTIVE:SCD CP MS")
+ field(INPE, "$(P):CS_ACTIVE:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):CS_ACTIVE:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):CS_ACTIVE PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):CS_ACTIVE:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):CS_ACTIVE:RBV CP MS")
+ field(INPB, "$(P):CS_ACTIVE:SET CP")
+ field(INPC, "$(P):CS_ACTIVE:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2017 of type Analog
+record(ao, "$(P):CS_ANGLEXY") {
+  field(DESC, "X-Y scan angle")
+  field(OUT, "$(P):CS_ANGLEXY:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "deg") field(PREC, "2")
+  field(SDIS, "$(P):CS_ANGLEXY:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):CS_ANGLEXY:RBV") {
+  field(DESC, "X-Y scan angle readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2017) $(PORT)")
+  field(SDIS, "$(P):EN_ALWAYS NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "deg") field(PREC, "2")
+}
+#% autosave 0 VAL
+record(ao, "$(P):CS_ANGLEXY:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):CS_ANGLEXY:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2017) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):CS_ANGLEXY:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):CS_ANGLEXY:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):CS_ANGLEXY:SYN.PACT")
+  field(INPB, "$(P):EN_GLOBAL NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):CS_ANGLEXY:SYN") {
+ field(INPA, "$(P):CS_ANGLEXY:RBV PP")
+ field(INPB, "$(P):EN_ALWAYS CP MS")
+ field(INPC, "$(P):EN_GLOBAL NPP")
+ field(INPD, "$(P):CS_ANGLEXY:SCD CP MS")
+ field(INPE, "$(P):CS_ANGLEXY:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):CS_ANGLEXY:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):CS_ANGLEXY PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):CS_ANGLEXY:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):CS_ANGLEXY:RBV CP MS")
+ field(INPB, "$(P):CS_ANGLEXY:SET CP")
+ field(INPC, "$(P):CS_ANGLEXY:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2009 of type Analog
+record(ao, "$(P):CS_ANGLEXZ") {
+  field(DESC, "X-Z scan angle")
+  field(OUT, "$(P):CS_ANGLEXZ:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "deg") field(PREC, "2")
+  field(SDIS, "$(P):CS_ANGLEXZ:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):CS_ANGLEXZ:RBV") {
+  field(DESC, "X-Z scan angle readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2009) $(PORT)")
+  field(SDIS, "$(P):EN_ALWAYS NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "deg") field(PREC, "2")
+}
+#% autosave 0 VAL
+record(ao, "$(P):CS_ANGLEXZ:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):CS_ANGLEXZ:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2009) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):CS_ANGLEXZ:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):CS_ANGLEXZ:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):CS_ANGLEXZ:SYN.PACT")
+  field(INPB, "$(P):EN_GLOBAL NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):CS_ANGLEXZ:SYN") {
+ field(INPA, "$(P):CS_ANGLEXZ:RBV PP")
+ field(INPB, "$(P):EN_ALWAYS CP MS")
+ field(INPC, "$(P):EN_GLOBAL NPP")
+ field(INPD, "$(P):CS_ANGLEXZ:SCD CP MS")
+ field(INPE, "$(P):CS_ANGLEXZ:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):CS_ANGLEXZ:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):CS_ANGLEXZ PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):CS_ANGLEXZ:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):CS_ANGLEXZ:RBV CP MS")
+ field(INPB, "$(P):CS_ANGLEXZ:SET CP")
+ field(INPC, "$(P):CS_ANGLEXZ:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2010 of type Analog
+record(ao, "$(P):CS_GEARTX") {
+  field(DESC, "Tomo-X scan gear ratio")
+  field(OUT, "$(P):CS_GEARTX:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "deg/mm") field(PREC, "0")
+  field(SDIS, "$(P):CS_GEARTX:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):CS_GEARTX:RBV") {
+  field(DESC, "Tomo-X scan gear ratio readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2010) $(PORT)")
+  field(SDIS, "$(P):EN_ALWAYS NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "deg/mm") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):CS_GEARTX:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):CS_GEARTX:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2010) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):CS_GEARTX:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):CS_GEARTX:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):CS_GEARTX:SYN.PACT")
+  field(INPB, "$(P):EN_GLOBAL NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):CS_GEARTX:SYN") {
+ field(INPA, "$(P):CS_GEARTX:RBV PP")
+ field(INPB, "$(P):EN_ALWAYS CP MS")
+ field(INPC, "$(P):EN_GLOBAL NPP")
+ field(INPD, "$(P):CS_GEARTX:SCD CP MS")
+ field(INPE, "$(P):CS_GEARTX:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):CS_GEARTX:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):CS_GEARTX PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):CS_GEARTX:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):CS_GEARTX:RBV CP MS")
+ field(INPB, "$(P):CS_GEARTX:SET CP")
+ field(INPC, "$(P):CS_GEARTX:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2013 of type Analog
+record(ao, "$(P):D1_CENTRE") {
+  field(DESC, "Fly axis scan starting position")
+  field(OUT, "$(P):D1_CENTRE:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_CENTRE:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_CENTRE:RBV") {
+  field(DESC, "Fly axis scan starting position readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2013) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_CENTRE:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_CENTRE:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2013) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_CENTRE:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_CENTRE:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_CENTRE:SYN.PACT")
+  field(INPB, "$(P):EN_MONITOR NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_CENTRE:SYN") {
+ field(INPA, "$(P):D1_CENTRE:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_MONITOR NPP")
+ field(INPD, "$(P):D1_CENTRE:SCD CP MS")
+ field(INPE, "$(P):D1_CENTRE:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_CENTRE:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_CENTRE PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_CENTRE:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_CENTRE:RBV CP MS")
+ field(INPB, "$(P):D1_CENTRE:SET CP")
+ field(INPC, "$(P):D1_CENTRE:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2052 of type Analog
+record(ao, "$(P):D1_IN") {
+  field(DESC, "Fly axis inner-skip distance")
+  field(OUT, "$(P):D1_IN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_IN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_IN:RBV") {
+  field(DESC, "Fly axis inner-skip distance readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2052) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_IN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_IN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2052) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_IN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_IN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_IN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_IN:SYN") {
+ field(INPA, "$(P):D1_IN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D1_IN:SCD CP MS")
+ field(INPE, "$(P):D1_IN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_IN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_IN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_IN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_IN:RBV CP MS")
+ field(INPB, "$(P):D1_IN:SET CP")
+ field(INPC, "$(P):D1_IN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):D1_IN_HLM") {
+  field(DESC, "Fly axis inner-skip high limit")
+  field(PINI, "YES")
+  field(EGU, "EGU")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2050 of type Analog
+record(ao, "$(P):D1_IND_HLM") {
+  field(DESC, "Fly axis total indent HLM")
+  field(OUT, "$(P):D1_IND_HLM:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_IND_HLM:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_IND_HLM:RBV") {
+  field(DESC, "Fly axis total indent HLM readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2050) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_IND_HLM:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_IND_HLM:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2050) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_IND_HLM:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_IND_HLM:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_IND_HLM:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_IND_HLM:SYN") {
+ field(INPA, "$(P):D1_IND_HLM:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D1_IND_HLM:SCD CP MS")
+ field(INPE, "$(P):D1_IND_HLM:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_IND_HLM:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_IND_HLM PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_IND_HLM:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_IND_HLM:RBV CP MS")
+ field(INPB, "$(P):D1_IND_HLM:SET CP")
+ field(INPC, "$(P):D1_IND_HLM:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2079 of type Analog
+record(ao, "$(P):D1_INDL") {
+  field(DESC, "Fly axis indent from Left")
+  field(OUT, "$(P):D1_INDL:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_INDL:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_INDL:RBV") {
+  field(DESC, "Fly axis indent from Left readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2079) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_INDL:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_INDL:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2079) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_INDL:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_INDL:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_INDL:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_INDL:SYN") {
+ field(INPA, "$(P):D1_INDL:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D1_INDL:SCD CP MS")
+ field(INPE, "$(P):D1_INDL:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_INDL:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_INDL PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_INDL:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_INDL:RBV CP MS")
+ field(INPB, "$(P):D1_INDL:SET CP")
+ field(INPC, "$(P):D1_INDL:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2018 of type Analog
+record(ao, "$(P):D1_INDL_REQ") {
+  field(DESC, "Fly axis Left indent request")
+  field(OUT, "$(P):D1_INDL_REQ:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_INDL_REQ:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_INDL_REQ:RBV") {
+  field(DESC, "Fly axis Left indent request readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2018) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_INDL_REQ:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_INDL_REQ:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2018) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_INDL_REQ:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_INDL_REQ:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_INDL_REQ:SYN.PACT")
+  field(INPB, "$(P):EN_INPROG NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_INDL_REQ:SYN") {
+ field(INPA, "$(P):D1_INDL_REQ:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_INPROG NPP")
+ field(INPD, "$(P):D1_INDL_REQ:SCD CP MS")
+ field(INPE, "$(P):D1_INDL_REQ:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_INDL_REQ:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_INDL_REQ PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_INDL_REQ:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_INDL_REQ:RBV CP MS")
+ field(INPB, "$(P):D1_INDL_REQ:SET CP")
+ field(INPC, "$(P):D1_INDL_REQ:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2080 of type Analog
+record(ao, "$(P):D1_INDR") {
+  field(DESC, "Fly axis indent from Right")
+  field(OUT, "$(P):D1_INDR:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_INDR:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_INDR:RBV") {
+  field(DESC, "Fly axis indent from Right readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2080) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_INDR:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_INDR:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2080) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_INDR:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_INDR:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_INDR:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_INDR:SYN") {
+ field(INPA, "$(P):D1_INDR:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D1_INDR:SCD CP MS")
+ field(INPE, "$(P):D1_INDR:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_INDR:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_INDR PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_INDR:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_INDR:RBV CP MS")
+ field(INPB, "$(P):D1_INDR:SET CP")
+ field(INPC, "$(P):D1_INDR:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2019 of type Analog
+record(ao, "$(P):D1_INDR_REQ") {
+  field(DESC, "Fly axis Right indent request")
+  field(OUT, "$(P):D1_INDR_REQ:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_INDR_REQ:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_INDR_REQ:RBV") {
+  field(DESC, "Fly axis Right indent request readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2019) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_INDR_REQ:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_INDR_REQ:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2019) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_INDR_REQ:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_INDR_REQ:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_INDR_REQ:SYN.PACT")
+  field(INPB, "$(P):EN_INPROG NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_INDR_REQ:SYN") {
+ field(INPA, "$(P):D1_INDR_REQ:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_INPROG NPP")
+ field(INPD, "$(P):D1_INDR_REQ:SCD CP MS")
+ field(INPE, "$(P):D1_INDR_REQ:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_INDR_REQ:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_INDR_REQ PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_INDR_REQ:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_INDR_REQ:RBV CP MS")
+ field(INPB, "$(P):D1_INDR_REQ:SET CP")
+ field(INPC, "$(P):D1_INDR_REQ:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2016 of type Analog
+record(ao, "$(P):D1_INDST") {
+  field(DESC, "Device indentation live switch")
+  field(OUT, "$(P):D1_INDST:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "4")
+  field(SDIS, "$(P):D1_INDST:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_INDST:RBV") {
+  field(DESC, "Device indentation live switch readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2016) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_INDST:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_INDST:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2016) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_INDST:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_INDST:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_INDST:SYN.PACT")
+  field(INPB, "$(P):EN_INPROG NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_INDST:SYN") {
+ field(INPA, "$(P):D1_INDST:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_INPROG NPP")
+ field(INPD, "$(P):D1_INDST:SCD CP MS")
+ field(INPE, "$(P):D1_INDST:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_INDST:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_INDST PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_INDST:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_INDST:RBV CP MS")
+ field(INPB, "$(P):D1_INDST:SET CP")
+ field(INPC, "$(P):D1_INDST:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2045 of type Analog
+record(ao, "$(P):D1_OUT") {
+  field(DESC, "Fly axis outer-skip band")
+  field(OUT, "$(P):D1_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_OUT:RBV") {
+  field(DESC, "Fly axis outer-skip band readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2045) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2045) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_OUT:SYN") {
+ field(INPA, "$(P):D1_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D1_OUT:SCD CP MS")
+ field(INPE, "$(P):D1_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_OUT:RBV CP MS")
+ field(INPB, "$(P):D1_OUT:SET CP")
+ field(INPC, "$(P):D1_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):D1_OUTHDM") {
+  field(DESC, "Fly axis outer distance desired lim")
+  field(PINI, "YES")
+  field(EGU, "EGU/s")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2001 of type Analog
+record(ao, "$(P):D1_SPAN") {
+  field(DESC, "Fly axis span (span)")
+  field(OUT, "$(P):D1_SPAN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D1_SPAN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D1_SPAN:RBV") {
+  field(DESC, "Fly axis span (span) readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2001) $(PORT)")
+  field(SDIS, "$(P):EN_TRAJSET NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D1_SPAN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D1_SPAN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2001) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D1_SPAN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D1_SPAN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D1_SPAN:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D1_SPAN:SYN") {
+ field(INPA, "$(P):D1_SPAN:RBV PP")
+ field(INPB, "$(P):EN_TRAJSET CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):D1_SPAN:SCD CP MS")
+ field(INPE, "$(P):D1_SPAN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D1_SPAN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D1_SPAN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D1_SPAN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D1_SPAN:RBV CP MS")
+ field(INPB, "$(P):D1_SPAN:SET CP")
+ field(INPC, "$(P):D1_SPAN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2065 of type Analog
+record(ao, "$(P):D2_EDGE") {
+  field(DESC, "Inc. axis Edge-skip distance")
+  field(OUT, "$(P):D2_EDGE:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_EDGE:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_EDGE:RBV") {
+  field(DESC, "Inc. axis Edge-skip distance readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2065) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_EDGE:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_EDGE:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2065) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_EDGE:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_EDGE:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_EDGE:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_EDGE:SYN") {
+ field(INPA, "$(P):D2_EDGE:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D2_EDGE:SCD CP MS")
+ field(INPE, "$(P):D2_EDGE:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_EDGE:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_EDGE PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_EDGE:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_EDGE:RBV CP MS")
+ field(INPB, "$(P):D2_EDGE:SET CP")
+ field(INPC, "$(P):D2_EDGE:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2053 of type Analog
+record(ao, "$(P):D2_IN") {
+  field(DESC, "Inc. axis inner-skip distance")
+  field(OUT, "$(P):D2_IN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_IN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_IN:RBV") {
+  field(DESC, "Inc. axis inner-skip distance readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2053) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_IN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_IN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2053) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_IN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_IN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_IN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_IN:SYN") {
+ field(INPA, "$(P):D2_IN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D2_IN:SCD CP MS")
+ field(INPE, "$(P):D2_IN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_IN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_IN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_IN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_IN:RBV CP MS")
+ field(INPB, "$(P):D2_IN:SET CP")
+ field(INPC, "$(P):D2_IN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2054 of type Analog
+record(ao, "$(P):D2_OUT") {
+  field(DESC, "Inc. axis skip distance")
+  field(OUT, "$(P):D2_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_OUT:RBV") {
+  field(DESC, "Inc. axis skip distance readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2054) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2054) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_OUT:SYN") {
+ field(INPA, "$(P):D2_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D2_OUT:SCD CP MS")
+ field(INPE, "$(P):D2_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_OUT:RBV CP MS")
+ field(INPB, "$(P):D2_OUT:SET CP")
+ field(INPC, "$(P):D2_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2048 of type Analog
+record(ao, "$(P):D2_SPAN") {
+  field(DESC, "Inc. axis scan span (span)")
+  field(OUT, "$(P):D2_SPAN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_SPAN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_SPAN:RBV") {
+  field(DESC, "Inc. axis scan span (span) readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2048) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_SPAN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_SPAN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2048) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_SPAN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_SPAN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_SPAN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_SPAN:SYN") {
+ field(INPA, "$(P):D2_SPAN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):D2_SPAN:SCD CP MS")
+ field(INPE, "$(P):D2_SPAN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_SPAN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_SPAN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_SPAN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_SPAN:RBV CP MS")
+ field(INPB, "$(P):D2_SPAN:SET CP")
+ field(INPC, "$(P):D2_SPAN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2014 of type Analog
+record(ao, "$(P):D2_START") {
+  field(DESC, "Inc. axis scan start position")
+  field(OUT, "$(P):D2_START:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_START:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_START:RBV") {
+  field(DESC, "Inc. axis scan start position readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2014) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_START:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_START:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2014) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_START:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_START:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_START:SYN.PACT")
+  field(INPB, "$(P):EN_MONITOR NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_START:SYN") {
+ field(INPA, "$(P):D2_START:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_MONITOR NPP")
+ field(INPD, "$(P):D2_START:SCD CP MS")
+ field(INPE, "$(P):D2_START:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_START:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_START PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_START:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_START:RBV CP MS")
+ field(INPB, "$(P):D2_START:SET CP")
+ field(INPC, "$(P):D2_START:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2006 of type Analog
+record(ao, "$(P):D2_STEP") {
+  field(DESC, "Inc. axis line separation")
+  field(OUT, "$(P):D2_STEP:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU") field(PREC, "4")
+  field(SDIS, "$(P):D2_STEP:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):D2_STEP:RBV") {
+  field(DESC, "Inc. axis line separation readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2006) $(PORT)")
+  field(SDIS, "$(P):EN_TRAJSET NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):D2_STEP:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):D2_STEP:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2006) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):D2_STEP:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):D2_STEP:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):D2_STEP:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):D2_STEP:SYN") {
+ field(INPA, "$(P):D2_STEP:RBV PP")
+ field(INPB, "$(P):EN_TRAJSET CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):D2_STEP:SCD CP MS")
+ field(INPE, "$(P):D2_STEP:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):D2_STEP:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):D2_STEP PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):D2_STEP:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):D2_STEP:RBV CP MS")
+ field(INPB, "$(P):D2_STEP:SET CP")
+ field(INPC, "$(P):D2_STEP:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):D2_TOLRATIO") {
+  field(DESC, "Inc. axis tolerance ratio")
+  field(PINI, "YES")
+  field(EGU, "")
+  field(PREC, "2")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2011 of type Analog
+record(ao, "$(P):DEV_SLVD") {
+  field(DESC, "Solved flag set by midlayer")
+  field(OUT, "$(P):DEV_SLVD:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):DEV_SLVD:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):DEV_SLVD:RBV") {
+  field(DESC, "Solved flag set by midlayer readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2011) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):DEV_SLVD:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DEV_SLVD:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2011) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):DEV_SLVD:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):DEV_SLVD:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):DEV_SLVD:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):DEV_SLVD:SYN") {
+ field(INPA, "$(P):DEV_SLVD:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):DEV_SLVD:SCD CP MS")
+ field(INPE, "$(P):DEV_SLVD:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):DEV_SLVD:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):DEV_SLVD PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):DEV_SLVD:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):DEV_SLVD:RBV CP MS")
+ field(INPB, "$(P):DEV_SLVD:SET CP")
+ field(INPC, "$(P):DEV_SLVD:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):J1_HLM") {
+  field(DESC, "Fly axis jerk desired limit")
+  field(PINI, "YES")
+  field(EGU, "EGU/s2")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):J2_HLM") {
+  field(DESC, "Inc. axis jerk desired limit")
+  field(PINI, "YES")
+  field(EGU, "EGU/s2")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2049 of type Analog
+record(ao, "$(P):LINE_DIR") {
+  field(DESC, "Current line direction")
+  field(OUT, "$(P):LINE_DIR:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):LINE_DIR:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):LINE_DIR:RBV") {
+  field(DESC, "Current line direction readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2049) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):LINE_DIR:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):LINE_DIR:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2049) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):LINE_DIR:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):LINE_DIR:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):LINE_DIR:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):LINE_DIR:SYN") {
+ field(INPA, "$(P):LINE_DIR:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):LINE_DIR:SCD CP MS")
+ field(INPE, "$(P):LINE_DIR:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):LINE_DIR:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):LINE_DIR PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):LINE_DIR:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):LINE_DIR:RBV CP MS")
+ field(INPB, "$(P):LINE_DIR:SET CP")
+ field(INPC, "$(P):LINE_DIR:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2012 of type Analog
+record(ao, "$(P):LINE_END") {
+  field(DESC, "Scan line End count")
+  field(OUT, "$(P):LINE_END:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):LINE_END:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):LINE_END:RBV") {
+  field(DESC, "Scan line End count readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2012) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):LINE_END:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):LINE_END:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2012) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):LINE_END:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):LINE_END:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):LINE_END:SYN.PACT")
+  field(INPB, "$(P):EN_INPROG NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):LINE_END:SYN") {
+ field(INPA, "$(P):LINE_END:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_INPROG NPP")
+ field(INPD, "$(P):LINE_END:SCD CP MS")
+ field(INPE, "$(P):LINE_END:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):LINE_END:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):LINE_END PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):LINE_END:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):LINE_END:RBV CP MS")
+ field(INPB, "$(P):LINE_END:SET CP")
+ field(INPC, "$(P):LINE_END:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2041 of type Analog
+record(ao, "$(P):LINE_N") {
+  field(DESC, "Scan line pointer")
+  field(OUT, "$(P):LINE_N:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):LINE_N:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):LINE_N:RBV") {
+  field(DESC, "Scan line pointer readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2041) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):LINE_N:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):LINE_N:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2041) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):LINE_N:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):LINE_N:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):LINE_N:SYN.PACT")
+  field(INPB, "$(P):EN_DISARMED NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):LINE_N:SYN") {
+ field(INPA, "$(P):LINE_N:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_DISARMED NPP")
+ field(INPD, "$(P):LINE_N:SCD CP MS")
+ field(INPE, "$(P):LINE_N:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):LINE_N:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):LINE_N PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):LINE_N:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):LINE_N:RBV CP MS")
+ field(INPB, "$(P):LINE_N:SET CP")
+ field(INPC, "$(P):LINE_N:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2060 of type Analog
+record(ao, "$(P):LINE_SUBEND") {
+  field(DESC, "Number of subsegments")
+  field(OUT, "$(P):LINE_SUBEND:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):LINE_SUBEND:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):LINE_SUBEND:RBV") {
+  field(DESC, "Number of subsegments readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2060) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):LINE_SUBEND:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):LINE_SUBEND:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2060) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):LINE_SUBEND:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):LINE_SUBEND:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):LINE_SUBEND:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):LINE_SUBEND:SYN") {
+ field(INPA, "$(P):LINE_SUBEND:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):LINE_SUBEND:SCD CP MS")
+ field(INPE, "$(P):LINE_SUBEND:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):LINE_SUBEND:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):LINE_SUBEND PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):LINE_SUBEND:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):LINE_SUBEND:RBV CP MS")
+ field(INPB, "$(P):LINE_SUBEND:SET CP")
+ field(INPC, "$(P):LINE_SUBEND:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2063 of type Analog
+record(ao, "$(P):LINE_SUBN") {
+  field(DESC, "subsegment counter")
+  field(OUT, "$(P):LINE_SUBN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "") field(PREC, "0")
+  field(SDIS, "$(P):LINE_SUBN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):LINE_SUBN:RBV") {
+  field(DESC, "subsegment counter readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2063) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "") field(PREC, "0")
+}
+#% autosave 0 VAL
+record(ao, "$(P):LINE_SUBN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):LINE_SUBN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2063) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):LINE_SUBN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):LINE_SUBN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):LINE_SUBN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):LINE_SUBN:SYN") {
+ field(INPA, "$(P):LINE_SUBN:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):LINE_SUBN:SCD CP MS")
+ field(INPE, "$(P):LINE_SUBN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):LINE_SUBN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):LINE_SUBN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):LINE_SUBN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):LINE_SUBN:RBV CP MS")
+ field(INPB, "$(P):LINE_SUBN:SET CP")
+ field(INPC, "$(P):LINE_SUBN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2064 of type Analog
+record(ao, "$(P):T_EDGE") {
+  field(DESC, "Edge-skip move time")
+  field(OUT, "$(P):T_EDGE:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_EDGE:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_EDGE:RBV") {
+  field(DESC, "Edge-skip move time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2064) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_EDGE:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_EDGE:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2064) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_EDGE:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_EDGE:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_EDGE:SYN.PACT")
+  field(INPB, "$(P):EN_MONITOR NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_EDGE:SYN") {
+ field(INPA, "$(P):T_EDGE:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_MONITOR NPP")
+ field(INPD, "$(P):T_EDGE:SCD CP MS")
+ field(INPE, "$(P):T_EDGE:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_EDGE:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_EDGE PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_EDGE:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_EDGE:RBV CP MS")
+ field(INPB, "$(P):T_EDGE:SET CP")
+ field(INPC, "$(P):T_EDGE:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2039 of type Analog
+record(ao, "$(P):T_LINE") {
+  field(DESC, "Total line move time")
+  field(OUT, "$(P):T_LINE:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_LINE:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_LINE:RBV") {
+  field(DESC, "Total line move time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2039) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_LINE:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_LINE:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2039) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_LINE:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_LINE:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_LINE:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_LINE:SYN") {
+ field(INPA, "$(P):T_LINE:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):T_LINE:SCD CP MS")
+ field(INPE, "$(P):T_LINE:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_LINE:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_LINE PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_LINE:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_LINE:RBV CP MS")
+ field(INPB, "$(P):T_LINE:SET CP")
+ field(INPC, "$(P):T_LINE:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2038 of type Analog
+record(ao, "$(P):T_SCAN") {
+  field(DESC, "Total scan move time")
+  field(OUT, "$(P):T_SCAN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_SCAN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_SCAN:RBV") {
+  field(DESC, "Total scan move time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2038) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_SCAN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_SCAN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2038) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_SCAN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_SCAN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_SCAN:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_SCAN:SYN") {
+ field(INPA, "$(P):T_SCAN:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):T_SCAN:SCD CP MS")
+ field(INPE, "$(P):T_SCAN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_SCAN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_SCAN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_SCAN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_SCAN:RBV CP MS")
+ field(INPB, "$(P):T_SCAN:SET CP")
+ field(INPC, "$(P):T_SCAN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2044 of type Analog
+record(ao, "$(P):T_IN") {
+  field(DESC, "inner-skip move time")
+  field(OUT, "$(P):T_IN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_IN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_IN:RBV") {
+  field(DESC, "inner-skip move time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2044) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_IN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_IN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2044) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_IN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_IN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_IN:SYN.PACT")
+  field(INPB, "$(P):EN_MONITOR NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_IN:SYN") {
+ field(INPA, "$(P):T_IN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_MONITOR NPP")
+ field(INPD, "$(P):T_IN:SCD CP MS")
+ field(INPE, "$(P):T_IN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_IN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_IN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_IN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_IN:RBV CP MS")
+ field(INPB, "$(P):T_IN:SET CP")
+ field(INPC, "$(P):T_IN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2005 of type Analog
+record(ao, "$(P):T_IN_LLM") {
+  field(DESC, "Fly axis inner-skip time LLM")
+  field(OUT, "$(P):T_IN_LLM:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_IN_LLM:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_IN_LLM:RBV") {
+  field(DESC, "Fly axis inner-skip time LLM readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2005) $(PORT)")
+  field(SDIS, "$(P):EN_TRAJSET NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_IN_LLM:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_IN_LLM:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2005) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_IN_LLM:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_IN_LLM:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_IN_LLM:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_IN_LLM:SYN") {
+ field(INPA, "$(P):T_IN_LLM:RBV PP")
+ field(INPB, "$(P):EN_TRAJSET CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):T_IN_LLM:SCD CP MS")
+ field(INPE, "$(P):T_IN_LLM:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_IN_LLM:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_IN_LLM PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_IN_LLM:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_IN_LLM:RBV CP MS")
+ field(INPB, "$(P):T_IN_LLM:SET CP")
+ field(INPC, "$(P):T_IN_LLM:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2042 of type Analog
+record(ao, "$(P):T_MID") {
+  field(DESC, "Scanline middle segnment time")
+  field(OUT, "$(P):T_MID:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_MID:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_MID:RBV") {
+  field(DESC, "Scanline middle segnment time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2042) $(PORT)")
+  field(SDIS, "$(P):EN_INPROG NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_MID:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_MID:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2042) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_MID:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_MID:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_MID:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_MID:SYN") {
+ field(INPA, "$(P):T_MID:RBV PP")
+ field(INPB, "$(P):EN_INPROG CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):T_MID:SCD CP MS")
+ field(INPE, "$(P):T_MID:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_MID:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_MID PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_MID:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_MID:RBV CP MS")
+ field(INPB, "$(P):T_MID:SET CP")
+ field(INPC, "$(P):T_MID:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2043 of type Analog
+record(ao, "$(P):T_OUT") {
+  field(DESC, "outer-skip move time")
+  field(OUT, "$(P):T_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_OUT:RBV") {
+  field(DESC, "outer-skip move time readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2043) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2043) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_MONITOR NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_OUT:SYN") {
+ field(INPA, "$(P):T_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_MONITOR NPP")
+ field(INPD, "$(P):T_OUT:SCD CP MS")
+ field(INPE, "$(P):T_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_OUT:RBV CP MS")
+ field(INPB, "$(P):T_OUT:SET CP")
+ field(INPC, "$(P):T_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2081 of type Analog
+record(ao, "$(P):T_OVRHD") {
+  field(DESC, "Calculated overhead time per line")
+  field(OUT, "$(P):T_OVRHD:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "s") field(PREC, "4")
+  field(SDIS, "$(P):T_OVRHD:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):T_OVRHD:RBV") {
+  field(DESC, "Calculated overhead time per line readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2081) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):T_OVRHD:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):T_OVRHD:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2081) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):T_OVRHD:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):T_OVRHD:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):T_OVRHD:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):T_OVRHD:SYN") {
+ field(INPA, "$(P):T_OVRHD:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):T_OVRHD:SCD CP MS")
+ field(INPE, "$(P):T_OVRHD:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):T_OVRHD:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):T_OVRHD PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):T_OVRHD:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):T_OVRHD:RBV CP MS")
+ field(INPB, "$(P):T_OVRHD:SET CP")
+ field(INPC, "$(P):T_OVRHD:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2008 of type Analog
+record(ao, "$(P):V1_DIFF") {
+  field(DESC, "Fly axis scan velocity delta")
+  field(OUT, "$(P):V1_DIFF:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s") field(PREC, "4")
+  field(SDIS, "$(P):V1_DIFF:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):V1_DIFF:RBV") {
+  field(DESC, "Fly axis scan velocity delta readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2008) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):V1_DIFF:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):V1_DIFF:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2008) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):V1_DIFF:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):V1_DIFF:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):V1_DIFF:SYN.PACT")
+  field(INPB, "$(P):EN_TRAJSET NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):V1_DIFF:SYN") {
+ field(INPA, "$(P):V1_DIFF:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_TRAJSET NPP")
+ field(INPD, "$(P):V1_DIFF:SCD CP MS")
+ field(INPE, "$(P):V1_DIFF:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):V1_DIFF:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):V1_DIFF PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):V1_DIFF:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):V1_DIFF:RBV CP MS")
+ field(INPB, "$(P):V1_DIFF:SET CP")
+ field(INPC, "$(P):V1_DIFF:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2007 of type Analog
+record(ao, "$(P):V1_OUT") {
+  field(DESC, "Fly axis line exit velocity")
+  field(OUT, "$(P):V1_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s") field(PREC, "4")
+  field(SDIS, "$(P):V1_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):V1_OUT:RBV") {
+  field(DESC, "Fly axis line exit velocity readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2007) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):V1_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):V1_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2007) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):V1_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):V1_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):V1_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):V1_OUT:SYN") {
+ field(INPA, "$(P):V1_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):V1_OUT:SCD CP MS")
+ field(INPE, "$(P):V1_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):V1_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):V1_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):V1_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):V1_OUT:RBV CP MS")
+ field(INPB, "$(P):V1_OUT:SET CP")
+ field(INPC, "$(P):V1_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2061 of type Analog
+record(ao, "$(P):V1_SCAN") {
+  field(DESC, "Fly axis line scan velocity")
+  field(OUT, "$(P):V1_SCAN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s") field(PREC, "4")
+  field(SDIS, "$(P):V1_SCAN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):V1_SCAN:RBV") {
+  field(DESC, "Fly axis line scan velocity readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2061) $(PORT)")
+  field(SDIS, "$(P):EN_DISARMED NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):V1_SCAN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):V1_SCAN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2061) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):V1_SCAN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):V1_SCAN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):V1_SCAN:SYN.PACT")
+  field(INPB, "$(P):EN_DISARMED NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):V1_SCAN:SYN") {
+ field(INPA, "$(P):V1_SCAN:RBV PP")
+ field(INPB, "$(P):EN_DISARMED CP MS")
+ field(INPC, "$(P):EN_DISARMED NPP")
+ field(INPD, "$(P):V1_SCAN:SCD CP MS")
+ field(INPE, "$(P):V1_SCAN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):V1_SCAN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):V1_SCAN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):V1_SCAN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):V1_SCAN:RBV CP MS")
+ field(INPB, "$(P):V1_SCAN:SET CP")
+ field(INPC, "$(P):V1_SCAN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):V1_SCANHLM") {
+  field(DESC, "HLM Fly axis line scan velocity ")
+  field(PINI, "YES")
+  field(EGU, "EGU/s")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+# non-mapped PV
+#% autosave 0 VAL
+record(ai, "$(P):V1_SCANLLM") {
+  field(DESC, "LLM Fly axis line scan velocity ")
+  field(PINI, "YES")
+  field(EGU, "EGU/s")
+  field(PREC, "4")
+  field(VAL,"")
+  field(SDIS, "$(P):EN_TRAJSET CP MS")
+  field(DISV, "0")
+  field(DISS, "INVALID")
+}
+
+#--------------
+
+# PVs mapping to P2047 of type Analog
+record(ao, "$(P):V2_IN") {
+  field(DESC, "Inc. axis line exit velocity")
+  field(OUT, "$(P):V2_IN:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s") field(PREC, "4")
+  field(SDIS, "$(P):V2_IN:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):V2_IN:RBV") {
+  field(DESC, "Inc. axis line exit velocity readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2047) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):V2_IN:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):V2_IN:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2047) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):V2_IN:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):V2_IN:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):V2_IN:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):V2_IN:SYN") {
+ field(INPA, "$(P):V2_IN:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):V2_IN:SCD CP MS")
+ field(INPE, "$(P):V2_IN:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):V2_IN:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):V2_IN PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):V2_IN:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):V2_IN:RBV CP MS")
+ field(INPB, "$(P):V2_IN:SET CP")
+ field(INPC, "$(P):V2_IN:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#
+
+# PVs mapping to P2046 of type Analog
+record(ao, "$(P):V2_OUT") {
+  field(DESC, "Inc. axis line entry velocity")
+  field(OUT, "$(P):V2_OUT:SET PP MS")
+  field(PINI, "NO")
+  field(EGU, "EGU/s") field(PREC, "4")
+  field(SDIS, "$(P):V2_OUT:SCD MS")
+  field(DISV, "999999")  
+}
+record(ai, "$(P):V2_OUT:RBV") {
+  field(DESC, "Inc. axis line entry velocity readback")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getVar(P2046) $(PORT)")
+  field(SDIS, "$(P):EN_MONITOR NPP MS")
+  field(DISV, "0")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(EGU, "EGU/s") field(PREC, "4")
+}
+#% autosave 0 VAL
+record(ao, "$(P):V2_OUT:SET") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):V2_OUT:ROL PP MS")
+  field(OUT, "@pmac.proto setVar(P2046) $(PORT)")
+  field(PINI, "YES")
+  field(FLNK, "$(P):V2_OUT:SCD")  
+  field(DISS, "INVALID")
+}
+record(calc, "$(P):V2_OUT:ROL") {
+  field(CALC, "(!B) || A")
+  field(INPA, "$(P):V2_OUT:SYN.PACT")
+  field(INPB, "$(P):EN_NEVER NPP")
+  field(PINI, "NO")
+}
+record(calcout, "$(P):V2_OUT:SYN") {
+ field(INPA, "$(P):V2_OUT:RBV PP")
+ field(INPB, "$(P):EN_MONITOR CP MS")
+ field(INPC, "$(P):EN_NEVER NPP")
+ field(INPD, "$(P):V2_OUT:SCD CP MS")
+ field(INPE, "$(P):V2_OUT:SET NPP")
+ field(INPF, "$(P):EN_AUTOSYNC CP")
+ field(SDIS, "$(P):V2_OUT:SET.PACT")
+ field(DISS, "INVALID")
+ field(CALC, "((D>0)||(F>0))?A:E")
+ field(OUT, "$(P):V2_OUT PP MS")
+ field(PINI, "NO")
+}
+record(calc, "$(P):V2_OUT:SCD") {
+ field(CALC, "(ABS(B-A)<10^(-C))?1:0")
+ field(INPA, "$(P):V2_OUT:RBV CP MS")
+ field(INPB, "$(P):V2_OUT:SET CP")
+ field(INPC, "$(P):V2_OUT:RBV.PREC")
+ field(PINI, "YES")
+ field(VAL,"0")
+ field(LOLO, "0.5")
+ field(LLSV, "MINOR") 
+}
+# -----------------------------
+#

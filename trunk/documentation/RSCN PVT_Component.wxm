@@ -1,0 +1,1235 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.08.1+git ] */
+
+/* [wxMaxima: input   start ] */
+ResetToA0():=[a0:0,a3:0,x0:'x0,x1:'x1,x3:'x3,v0:'v0,v1:'v1,v3:'v3,a1:'a1,j1:'j1,Jf:'Jf,t1:'t1,t2:'t2,t3:'t3,tf:t1+t2+t3,DeltaX:'DeltaX]$
+/*ResetToBase():=[xm1:'xm1,x0:'x0,x1:'x1,x2:'x2,x3:'x3,x4:'x4,vm1:'vm1,v0:'v0,v1:'v1,v2:'v2,v3:'v3,v4:'v4,a0:'a0,a1:'a1,a2:'a2,a3:'a3,a4='a4,j1:'j1,Jf:'Jf,t0:'t0,t1:'t1,t2:'t2,t3:'t3,t4:'t4,tf:t1+t2+t3,DeltaX:'DeltaX]$*/
+ResetToBase():= remvalue(xm1,x0,x1,x2,x3,x4,vm1,v0,v1,v2,v3,v4,a0,a1,a2,a3,a4,j1,Jf,t0,t1,t2,t3,t4,tf,DeltaX,t,delta,alpha);
+maxima_userdir;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: title   start ]
+RSCN PVT Scan-Skip formulation
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: section start ]
+PVT kinematics formulation
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: comment start ]
+In this section, some useful combinations of the Postion Velocity Time motion are formulated. The equations are in a general form, contain a mid PVT move which is constant acceleration at maximum acceleration. 
+S-Curved acceleration is a special case of this solution with t1=t2
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: subsect start ]
+PVT as a linear acceleration equation
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+define(f_a1(t),a0+(a1-a0)/t1*t);
+define(f_v1(t),v0+integrate(f_a1(t), t));
+define(f_x1(t),x0+integrate(f_v1(t), t));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Solving single PVT with known initial and final points
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+eqx1: x1=f_x1(t1);
+eqv1: v1=f_v1(t1);
+Sln1: solve([eqx1,eqv1],[t1,a1]);
+define(s_t1_1(x0,v0,x1,v1,a0),ev(t1,Sln1[1][1]));
+define(s_a1_1(x0,v0,x1,v1,a0),ev(a1,Sln1[1][2]));
+define(s_t1_2(x0,v0,x1,v1,a0),ev(t1,Sln1[2][1]));
+define(s_a1_2(x0,v0,x1,v1,a0),ev(a1,Sln1[2][2]));
+Sln2: solve([eqx1,eqv1],[a0,a1]);
+define(p_a0_1(x0,v0,x1,v1,t1),ev(a0,Sln2[1]));
+define(p_a1_1(x0,v0,x1,v1,t1),ev(a1,Sln2[1]));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+Symmetric 2 segment turn around
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: comment start ]
+We only need to solve it for one segment. The 2nd segment would be the oposite move: v21=-v10, t21=t11
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+eq11: 0=p_a0_1(0,v0,x1,0,t1);
+eq12: a1=p_a1_1(0,v0,x1,0,t1);
+eqSym2SegRet: solve([eq11,eq12],[t1,x1]);
+second(eqSym2SegRet[1][1]);
+define(tOutFn(v0,a1),second(eqSym2SegRet[1][1]));
+define(d1OutFn(v0,a1),second(eqSym2SegRet[1][2]));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Single PVT with known initial and final points, for Opt-jerk
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+eq11: ai=p_a0_1(x0,v0,x1,v1,t1)-Delta;
+eq12: af=p_a1_1(x0,v0,x1,v1,t1)+Delta;
+eqSngMinJrk: solve([eq11,eq12],[t1,Delta]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+Single PVT accelerating with constant acceleration
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+eq11: af=p_a0_1(x0,v0,x0+dX,v0+dV,t1),factor;
+eq12: af=p_a1_1(x0,v0,x0+dX,v0+dV,t1),factor;
+eqSngAcc: solve([eq11,eq12],[af,dX]),factor;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Symmetric 4 segment turn around
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: comment start ]
+Move is a sequence of 4 moves: 
+point(-1) to point(0): t0, X constant speed=XVel, Y  increasing accel to a0, 
+point(0) to point(1): t1, X decel to speed=0, Y decreasing accel to 0, 
+point(1) to point(2): t2=0,  not used
+point(2) to point(3): t3, X accel to speed=XVel, Y  decreasing accel to a3=-a0,
+point(3) to point(4): t4, X constant speed=XVel, Y  decreasing accel to 0,
+
+When position crosses the grid X boundary, Y is at ax2Step*(K/2) and returns at ax2Step*(1-K/2). 0<K<1
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Solving the equations in general form shows that only a symmetric solution with a0=-a3, v0=v3 and t0=t4 can be valid 
+when Y pre and post moves are equal
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: subsect start ]
+Initial formulation and analysis
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+xm1:0;vm1:0$
+x0:xm1+DeltaX*(K/2)$
+x3:xm1+DeltaX*(1-K/2)$
+x4:xm1+DeltaX;v4:0$t1:t3$
+eqm10: 0=p_a0_1(xm1,vm1,x0,v0,t0)$
+eqm11: a0=p_a1_1(xm1,vm1,x0,v0,t0)$
+eq00: a0=p_a0_1(x0,v0,x3,v3,t1+t3)$
+eq01: a3=p_a1_1(x0,v0,x3,v3,t1+t3)$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4)$
+eq31: 0=p_a1_1(x3,v3,x4,v4,t4)$
+eqSet:[eqm10,eqm11,eq00,eq01,eq30,eq31];
+sln:solve(eqSet,[t0,v0,a0,t4,v3,a3]);
+a0MAX:ev(sln[1][3],[K=0]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+slnValid:sln[3];
+Pre4Seg:subst(K=0.5,slnValid),float;
+ev(Pre4Seg,t3=0.015,DeltaX=0.001),float;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Pre4Seg:subst([t3=1,DeltaX=1],slnValid);
+wxplot2d(ev([v0,a0],Pre4Seg),[K,0,1],[title,"v0 and a0 as a function of K"],[grid2d,true]);
+wxplot2d(ev([t0],Pre4Seg),[K,0,0.9],[title,"t0 as a function of K"],[grid2d,true]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K:0.5; t1=t0+t3;
+ev([f_x1(t),t0,v0,a0],Pre4Seg);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+(OBS) Symmetric 4 segment turn around formulation 
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Now : solving the equations for K with symmetric assumption:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$K:'K$
+[xm1:0,vm1:0,v4:0,x0:xm1+DeltaX*(K/2),x3:xm1+DeltaX*(1-K/2),x4:xm1+DeltaX,v4:0,a3:-a0,a4:0,v3:v0,t4:t0];
+eqm10: 0=p_a0_1(xm1,vm1,x0,v0,t0)$
+eqm11: a0=p_a1_1(xm1,vm1,x0,v0,t0)$
+eq00: a0=p_a0_1(x0,v0,x3,v3,t3)$
+eq01: a3=p_a1_1(x0,v0,x3,v3,t3)$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4)$
+eq31: a4=p_a1_1(x3,v3,x4,v4,t4)$
+/* eqSet:[eqm10,eqm11,eq00,eq01,eq30,eq31]; */
+eqSet:[eqm10,eqm11,eq00];
+s4S2:solve(eqSet,[t0,v0,K]);
+/*s4S3:solve(eqSet,[K,v0,t3]);*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+RSCN substitution Symmetric 4 segment turn around formulation 
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(a0>0);
+s4S2simp:ev(s4S2,[DeltaX=delta*a0]),factor;
+second(%[1][1])$
+
+/*factor(%+t3-sqrt(3*Delta));*/
+wxplot3d(%,[t3,0,0.01],[delta,0,0.1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+slnPlus:s4S2simp[1];
+subs0:[t0=tIn/1,v0=ax2VISkip,t3=tOut/1,Delta=ax2Step*a0,a0=a2Max]$
+subs1:append([s4S3[1][1]],subs0)$
+Pre4SegPlus:subst(subs0,slnPlus),factor;
+slnMinus:s4S2simp[2]$
+Pre4SegMinus:
+subst(subs0,slnMinus),factor;
+d2InEq: d2In=subst(subs1,x0);
+ax2VISkipEq: subst(subs0,s4S3[1][2]);
+v2OutEq: v2Out=ax2VISkip+tOut/1*a2Max/2;
+a2MaxMAX: ev(a2Max,subst(append(subs0),a0MAX));
+subst(append(subs0,[tOut=2*XVel/a1Max*1]),a0MAX);
+subs2:[x0=0,v0=ax2VISkip,t1=tOut/1,a1=0,a0=a2Max]$
+d2OutEq: d2Out=subst(subs2,f_x1(t1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+CalcCase: [tOut=40,ax2Step=-0.01];
+a2MaxMAX: ev(a2MaxMAX,CalcCase);
+CalcCase: append([a2Max=a2MaxMAX/10],CalcCase);
+slntIn: solve(ev([Pre4SegMinus],CalcCase)),float;
+temsub: ev([d2InEq,ax2VISkipEq],append(slntIn,CalcCase)),float,eval;
+ev([d2OutEq,d2Out=(ax2Step-2*d2In)/2],append(CalcCase,temsub)),eval;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+symmetric 4+1 segment move, with constant velocity segment a2=0, v2=v3, t2=given
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: comment start ]
+Trick is to have the same set of equations as 4 segment, with additional assumption that the total travel is now DeltaX + t2*v2, 
+where DeltaX is the 4 segment travel equivalent, t2 is given and v2 can be written in terms of t0,t3 and a0
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$K:'K$
+[xm1:0,vm1:0,v4:0,x0:xm1+DeltaXTot*(K/2),x3:xm1+DeltaXTot*(1-K/2),x4:xm1+DeltaXTot,v4:0,a3:-a0,a4:0,v3:v0,t4:t0,t1:t3];
+DeltaXTot: DeltaX -t2*(t0+t3)*a0/2;
+eqm10: 0=p_a0_1(xm1,vm1,x0,v0,t0)$
+eqm11: a0=p_a1_1(xm1,vm1,x0,v0,t0)$
+eq00: a0=p_a0_1(x0,v0,x3,v3,t1+t3)$
+eq01: a3=p_a1_1(x0,v0,x3,v3,t1+t3)$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4)$
+eq31: a4=p_a1_1(x3,v3,x4,v4,t4)$
+eqSet:[eqm10,eqm11,eq00,eq01,eq30,eq31];
+s5S2:solve(eqSet,[K,v0,t0]);
+s5S3:solve(eqSet,[K,v0,t3]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+RSCN substitution of symmetric 4+1 segment turnaround, with constant velocity segment a2=0, v2=v3, t2=tEdgeTotal
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: input   start ] */
+forget(a0>0);
+_simpSub:[DeltaX=delta*a0,t2=-(2*t3-4*tau)/3];
+_simpSln:solve(_simpSub,[tau,delta]);
+/*print("subst into")$*/
+s5S2[2][3];
+slnPlus:ev(%,_simpSub),factor;
+assume(a0>0);
+subs0:[t0=tIn/1,v0=v2In,t2=tEdgeTotal,t3=tOut/1,DeltaX=d2Step,a0=a2Max]$
+Pre4CSegSubs: subst(subs0,_simpSln[1]);
+Pre4CSegPlus:subst(subs0,slnPlus),expand;
+s5S2[3][3]$
+slnMinus:ev(%,_simpSub),factor$
+Pre4CSegMinus:subst(subs0,slnMinus),expand;
+define(tInFn(tOut,tEdgeTotal,a2Max,d2Step),expand(ev(second(Pre4CSegPlus),Pre4CSegSubs)));
+forget(a0>0);
+d2InSet: '[x0=0,v0=0,a0=0,a1=a2Max,t1=tIn]$
+d2InEq: d2In=ev(f_x1(t1),d2InSet),factor;
+v2InEq: v2In=ev(f_v1(t1),d2InSet);
+d2OutSet: '[x0=0,v0=second(v2InEq),a0=a2Max,a1=0,t1=tOut]$
+d2OutEq: d2Out=ev(f_x1(t1),d2OutSet),factor;
+v2OutEq: v2Out=ev(f_v1(t1),d2OutSet),factor;
+a2MaxMAX: ev(a2Max,subst(append(subs0),a0MAX));
+subst(append(subs0,[tOut=2*XVel/a1Max*1]),a0MAX);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+forget(a0>0);
+_simpSub:[DeltaX=delta*a0,t2=-(2*t3-4*tau)/3];
+_simpSln:solve(_simpSub,[tau,delta]);
+/*print("subst into")$*/
+s5S2[2][3];
+slnPlus:ev(%,_simpSub),factor;
+assume(a0>0);
+tmp: t3=(tOut+(tEdge/2));
+subs0:[t0=tIn/1,v0=ax2VISkip,t2=tEFSkip,DeltaX=d2Step,a0=a2Max]$
+/*
+subs0:append(tmp,subs0)$
+*/
+tEdgeTotal=(tEdge/2)+tEFSkip;
+Pre4CSegSubs: subst(append([tmp],subs0),_simpSln[1]);
+
+tmpt3: solve(_simpSub[2],[t3]);
+subs0:append(tmpt3,subs0)$
+
+Pre4CSegPlus:subst(subs0,slnPlus),expand;
+s5S2[3][3]$
+slnMinus:ev(%,_simpSub),factor$
+Pre4CSegMinus:subst(subs0,slnMinus),expand;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+a2Max;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* Now calculate (tEdge/2) for ax2 moves */
+forget(a2Max>0);
+forget(d2In>0);
+
+rscn_tIn_ax2: solve(d2InEq,[tIn])[2];
+
+tmp: Pre4CSegPlus-tIn;
+
+%-third(second(%));
+tmp: %^2;
+solve(tmp,[tau]),expand$
+tauEq: %[2];
+deltaEq: solve(tmp,[delta])[1];
+tmp: solve(Pre4CSegSubs[1],[tEdge]);
+
+incase: [tEFSkip=0];
+rscn_tau_ax2: subst(incase,tauEq),radcan;
+/*subst([Pre4CSegSubs[2]],%);*/
+subst(incase,tmp),ratsimp;
+rscn_tEdge_ax2: subst(rscn_tau_ax2,%);
+
+rscn_delta_ax2: subst(incase,deltaEq),ratsimp;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(rscn_tIn_ax2^2,[a2Max]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([delta=d2Step/a2Max],rscn_delta_ax2);
+solve(%,[a2Max]);
+diff(second(%[1]),tau,1),ratsimp;
+subst([tau=(tEdge/2)/2+tOut/2],1/%),factor;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume((tOut+tau+tInLLM)>0);
+assume(a2Max>0);
+tmp:subst([tIn=tInLLM],Pre4CSegPlus);
+assume((2*tInLLM-3*tEFSkip+6*tau)>0);
+dumeq:solve(tmp, [delta]);
+subst(Pre4CSegSubs,dumeq),factor;
+
+assume((2*tInLLM-3*tEFSkip+6*tau)<0);
+dumeq:solve(tmp, [delta]);
+subst(Pre4CSegSubs,dumeq),factor;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s5S3[2][1];
+subst(_simpSub,%);
+subst(subs0,%);
+subst([a2Max=a^2],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Dummy: 'Dummy;
+CalcCase: [v0=0.5,a1=-500,a2Max=2,ax2Step=0.002];
+ev(eqSym2SegRet[1], CalcCase);
+subst(%,[tOut=t3,tEdgeTotal=0.03-t3]);
+append(%,ev(CalcCase,%));
+append(%,ev(Pre4CSegSubs,%));
+ev(Pre4CSegPlus,%),float;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+Rascan time and range analysis
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+tTotMidEq: tTotMid=d1Span/v1Out+2*tOutFn(v1Out,-a1Max);
+[d1Span=ax1TotSpan-2*d1OutFn(v1Out,-a1Max)];expand(ev(tTotMidEq,%));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([ax1TotSpan=10,v1Out=4],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+define(tTotMidFn(d1Span,v1Out,a1Max),d1Span/v1Out+2*tOutFn(v1Out,-a1Max));
+define(tDwellLineFn(d1Span,v1Out,a1Max),d1Span/v1Out);
+define(ax1TotSpanFn(d1Span,v1Out,a1Max),d1Span+2*d1OutFn(v1Out,-a1Max));
+define(ax1EtaFn(d1Span,v1Out,a1Max),ratsimp(tDwellLineFn(d1Span,v1Out,a1Max)/tTotMidFn(d1Span,v1Out,a1Max)));
+tmpEq: ax1EtaFn(d1Span,v1Out,a1Max)=eta;
+radcan(expand(solve(tmpEq,[v1Out])))$
+define(VNormedFn(a1Max,eta),second(%[2])/sqrt(d1Span));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tmpR: [1,vn,500]$
+tmpT: tTotMidFn(tmpR[1],tmpR[2]*sqrt(tmpR[1]),tmpR[3]);
+tmpE: ax1EtaFn(tmpR[1],tmpR[2]*sqrt(tmpR[1]),tmpR[3]);
+tmpS: ax1TotSpanFn(tmpR[1],tmpR[2]*sqrt(tmpR[1]),tmpR[3]);
+tmpV: VNormedFn(tmpR[3],0.9);
+tmpVN : [vn,0.1,tmpV];
+wxplot2d([tmpT],tmpVN,[title,"Symetric 4 segment optimized"],[xlabel,"vn"],[ylabel,"[mm],[mm/s]"],[grid2d,true])$
+wxplot2d([tmpE,2-tmpS/tmpR[1]],tmpVN,[title,"Symetric 4 segment optimized"],[xlabel,"vn"],[ylabel,"[mm],[mm/s]"],[grid2d,true],[legend,"TimeEta","RangeEta","Acc"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+symmetric 4+1 segment move, with constant velocity segment a2=0, v2=v3, K=given, t0=given
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Trick is to have the same set of equations as 4 segment, with additional assumption that the total travel is now DeltaX + t2*v2, 
+where DeltaX is the 4 segment travel equivalent, K is given and v2 can be written in terms of t0,t3 and a0
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$K:'K$
+[xm1:0,vm1:0,v4:0,x0:xm1+PreX,x3:xm1+DeltaX-PostX,x4:xm1+DeltaX,v4:0,a4:0,v3:v0,t4:t0,t1:t3];
+DeltaXTot: DeltaX -t2*(t0+t3)*a0/2;
+eqm10: 0=p_a0_1(xm1,vm1,x0,v0,t0)$
+eqm11: a0=p_a1_1(xm1,vm1,x0,v0,t0)$
+eq00: a0=p_a0_1(x0,v0,x3,v3,t1+t3)$
+eq01: a3=p_a1_1(x0,v0,x3,v3,t1+t3)$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4)$
+eq31: a4=p_a1_1(x3,v3,x4,v4,t4)$
+eqSet:[eqm10,eqm11,eq00,eq01,eq30,eq31];
+eqtemp: solve([eqm10,eqm11],[v0,DeltaX]);
+eqtemp: append(eqtemp[1],[eq00,eq01]);
+eqtemp: solve(eqtemp,[v0,K1,K2,DeltaX]);
+eqtemp: append(eqtemp,[eq30,eq31]);
+eqtemp: solve(eqtemp,[v0,PostX,DeltaX]);
+s5SK2:solve(eqSet,[v0,t0,a3,PostX,DeltaX]);
+s5SK3:solve(eqSet,[DeltaX,v0,K1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+symmetric 5 segment move
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+General solution for symmetric 5 segment. DeltaX and t1 are given
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+Ki:'Ki,Ko:'Ko$
+[xm1:0,vm1:0,am1:0,x0:DeltaX*(Ki/2),x1:DeltaX*(Ko/2),x2:DeltaX*(1-Ko/2),v2:v1,a2:-a1,t3:t1,x3:DeltaX*(1-Ki/2),v3:v0,a3:-a0,t4:t0,x4:DeltaX,v4:0,a4:0];
+/*DeltaXTot: DeltaX +x2;*/
+
+eqm10: am1=p_a0_1(xm1,vm1,x0,v0,t0)$
+eqm11: a0=p_a1_1(xm1,vm1,x0,v0,t0)$
+eq00: a0=p_a0_1(x0,v0,x1,v1,t1)$
+eq01: a1=p_a1_1(x0,v0,x1,v1,t1)$
+eq10: a1=p_a0_1(x1,v1,x2,v2,t2)$
+eq11: a2=p_a1_1(x1,v1,x2,v2,t2)$
+eq20: a2=p_a0_1(x2,v2,x3,v3,t3)$
+eq21: a3=p_a1_1(x2,v2,x3,v3,t3)$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4)$
+eq31: a4=p_a1_1(x3,v3,x4,v4,t4)$
+assume(t0>0,t2>0,Ki<Ko and 0<Ki,Ko<1 and 0<Ko);
+eqSet:[eqm10,eqm11,eq00,eq01,eq10],factor;
+solveradcan:false$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s5ST:solve(eqSet,[t0,Ko,t2,v0,v1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expand(s5ST[1][2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+forget(t0>0,t1>0,t2>0,DeltaX>0,Ki>0,Ko>0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s5ST[1][5];
+ev(%,[Ko=1]);
+solve(%,Ki);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solveradcan:true;
+solvedecomposes:true;
+last(s5ST[1][1]);
+/*expand(ev(s5ST[1][1],[t2=0]));*/
+solve(%,[t0]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Asymmetric 5-1 segment move
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: comment start ]
+General solution for 5 segment. DeltaX and t1 are given
+For applications like moving between the pixels, it makes sense to try a non-symmetric solution with peak acceleration and velocity towards begining of the move.
+Idea is to shift the acceleration and Jerk towards the begining of the step move, improving settling performance.
+This could be done by solving a 4 segment move into the first segments of a 5 segment move and leave the last move with 0 acceleration/Velocity.
+However this would need an active t2.
+
+Another approach is to put peak acceleration at a0, decelerate with minimum jerk from there. 
+, 
+-a0 =< a1 < 0
+So we may keep the exit and entry points symmetric
+
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Genaral equations for 5 segment move: 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+Ki:'Ki,Ko:'Ko$
+specSet:[]$
+
+forget(t0,t1,t2,a3)$
+eqm10: am1=p_a0_1(xm1,vm1,x0,v0,t0),factor$
+eqm11: a00=p_a1_1(xm1,vm1,x0,v0,t0),factor$
+
+eq00: a0=p_a0_1(x0,v0,x1,v1,t1),factor$
+eq01: a1=p_a1_1(x0,v0,x1,v1,t1),factor$
+
+/*
+eq10: a1=p_a0_1(x1,v1,x2,v2,t2),factor$
+eq11: a2=p_a1_1(x1,v1,x2,v2,t2),factor$
+*/
+
+eq20: a2=p_a0_1(x2,v2,x3,v3,t3),factor$
+eq21: a3=p_a1_1(x2,v2,x3,v3,t3),factor$
+eq30: a3=p_a0_1(x3,v3,x4,v4,t4),factor$
+eq31: a4=p_a1_1(x3,v3,x4,v4,t4),factor$
+
+eqSet_4SegFull:ev([eqm10,eqm11,eq00,eq01,eq20,eq21,eq30,eq31]);
+[xm1:0,vm1:0,am1:0,v4:0,a4:0]$
+eqSet_4Seg:ev([eq00,eq01,eq20,eq21,eq30,eq31]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Rascan solutions
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+/* Special RSCN condition as t1=t3=tOut: [t3:t1]$*/
+ax2_specSet:append([t3=t1],specSet)$
+
+/* Eliminate secion 2 (t2=0) for now: [x2:x1,v2:v1,v00:v0]$*/
+ax2_specSet:append([x2=x1,v2=v1,v00=v0],ax2_specSet)$
+/* Trajectory design: allowing acceleration discontinuity at t0 which means a00<>a0, but v00=v0 
+THIS is the essential design of the motion
+
+from worst (higher accels) to best
+
+[a1:0,a2:-a0]$  
+[a1:-a0/2,a2:-a0]$
+[a1:-a0,a2:-a0]$
+
+*/
+ax2_specSet:append([a1=-a0,a2=-a0],ax2_specSet)$
+
+/* Given departure and arrival points at t0 and t3: [x0:x4*(Ki/2),x3:x4*(1-Ki/2)]$ */
+[Ki:1/2]$
+ax2_specSetQuarter:append([x0=x4*(Ki/2),x3=x4*(1-Ki/2)],ax2_specSet);
+rascanSubs:[t1=tOut,t4=tIESkip,x0=d2In,x1=d2Out,x3=ax2Entry,x4=d2Step,v1=v2In,v3=v2Out,a0=a2Max];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+AX2 For given x0/x3 posits and settling acceleration a3
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: input   start ] */
+eqSet1:subst(ax2_specSetQuarter,eqSet_4Seg);
+/*
+Solving for a positive overall travel (step), which implies negative a3,
+we can substitute x4 with delta^2 and a3 with -alpha^2 for simplicity:
+a3:-alpha^2$
+x4:delta^2$
+x0:ev(x0)$
+x3:ev(x3)$
+*/
+ax2_specSet1:append([a3=-alpha^2,x4=delta^2],ax2_specSetQuarter);
+a4V:solve(subst(ax2_specSet1,eqSet1),[v0,a0,x1,v1,v3,t4]);
+/* Chose the solution so that t4 is positive:
+might be better to replace t4 with tau^2
+*/
+if ev(t4,ev(a4V[1][6],[delta=1,alpha=-1])) > 0 then
+    a4V1:a4V[1]
+else if ev(t4,ev(a4V[2][6],[delta=1,alpha=-1])) > 0 then
+        a4V1:a4V[2]
+    else
+        a4V1:'a4V1;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*
+Note the discontinuity in acceleration at t0 means we have two a0 values
+*/
+[eqm10,eqm11];
+a40s: solve(%,[t0,a00]);
+t0F:a40s[1][1]; a0F:a40s[1][2];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+test case 
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+tmp : ev([x0,a4V1],specSetQuarter)$
+testCase :[t1=0.01,delta=sqrt(0.001),alpha=-sqrt(0.1)]$
+display(ev([t1,delta^2,alpha^2],testCase));
+
+
+tmp:a4V1$
+
+ev(ev([0,x0,x0,x1,x2,x3,x4],tmp),eval,specSet1)$
+posits:ev(%,testCase),float$
+PosNrm : %/lmax(abs(%))$
+
+ev(ev([0,v00,v0,v1,v2,v3,v4],tmp),eval,specSet1)$
+velos:ev(%,testCase),float$
+VelNrm : %/lmax(abs(%))$
+
+ev(ev([0,ev(a00,a0F),a0,a1,a2,a3,0],tmp),eval,specSet1)$
+accels:ev(%,testCase),float$
+AccNrm : %/lmax(abs(%))$
+ev(ev([ev(-t0,a40s),0,0,t1,t1,2*t1,2*t1+t4],tmp),eval,specSet1)$
+times:ev(%,testCase),float$
+display(times);
+display(posits);
+display(velos);
+display(accels);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ptemp:[['discrete, times, PosNrm],['discrete, times, VelNrm],['discrete, times,AccNrm]]$
+wxplot2d(ptemp,[title,"Nrm Acceleration, and point position and velocicy"],[grid2d,true],[style,lines],[legend,"Pos","Vel","Acc"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ResetToBase()*/
+$i:'i$ptemp:[]$
+
+push((posits[7]-posits[1])/4,ptemp)$
+push((posits[7]-posits[1])*3/4,ptemp)$
+
+for i in [1,3,5,6] do (
+
+   ftemp : ev(f_x1(t),[x0=posits[i],
+         v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+ t1=times[i+1]-times[i],
+                t=t-times[i]]),
+
+    P_x1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+
+   push(P_x1(t),ptemp)
+    )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Position[mm]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1","Pix2L","Pix1H"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ResetToBase()$*/
+i:'i$ptemp:[]$
+for i in [1,3,5,6] do (
+
+       ftemp : ev(f_v1(t),[x0=posits[i],
+                v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+                t1=times[i+1]-times[i],
+                t=t-times[i]]),
+
+    P_v1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+
+    push(P_v1(t),ptemp)
+    )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Velocity[mm/s]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+Optimal solution for limited Jerk Step move: Given x0 and x3, continuos acceleration
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: comment start ]
+A4V1 solution for t1=0.015, x4=0.001 and a3=-0.25 leads to an almost continuous acceleration
+ which suggests that by adding the condition as a1=a2, and relaxing a3 as a avriable,
+the set can be solved for that solution. It means that the arrivinng acceleration will be dictated 
+by the solution. So for any given tOut and Step size, there will be a solution. Maximum Acceleration
+can be compared to maximu allowed to validate the solution. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+Ki:'Ki$Ko:'Ko$
+X: matrix([Ki/2,kx1,kx2,(1-Ko/2),1,kx5])*x4;
+T: matrix([kt0,1,kt2,kt3,kt4,kt5])*t1;
+V: matrix([kv0,kv1,kv2,kv3,kv4,kv5])*x4/t1;
+A: matrix([ka0,ka1,ka2,-ka3,ka4,ka5])*x4/t1^2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+General case solution for Step move with given exit and entry points
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(t1>0,x4>0);
+linax2_specSet: [t4=T[1,5],x1=X[1,2],v0=V[1,1],v1=V[1,2],v3=V[1,4],a0=A[1,1],a3=A[1,4],x0=X[1,1],x3=X[1,4]];
+tmp:subst(a00=a0,a0F)$
+tmp:append([tmp],eqSet_4Seg)$
+tmp:subst(ax2_specSet,tmp)$
+lineqSet:subst(linax2_specSet,tmp)$
+a4VO2:solve(lineqSet,[kt4,kx1,kv0,kv1,kv3,ka0,ka3])$
+a4VOsubd: subst(a4VO2[2],linax2_specSet);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*Simplifying the formulas::: not succsessful do far!!!!
+_simpSub1 :kappa^2=3*Ki*Ko+2*Ko-6*Ki^2+14*Ki-4;
+_simpSub2 :gamma=Ko+25*Ki;
+_simpSub: [_simpSub1,_simpSub2];
+_simpSln: solve(_simpSub,[Ki,Ko]);
+tmp:subst(_simpSln[1],a4VOsubd[1]);
+expand(tmp);
+subst(_simpSln[1],tmp);
+tmp:solve([(25*Ki+Ko)=gamma]],Ki)[1];
+second(ratsimp(a4VOsubd)[2]);
+factor(subst(tmp,%));
+%*sqrt(Ko)*gamma^2/x4;
+factor(%);
+/*2*Ko^(5/2)+100*Ki*Ko^(3/2)+1250*Ki^2*sqrt(Ko)=delta,sqrt((3*Ki+2)*Ko-6*Ki^2+14*Ki-4)=alpha*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+test case numerical solution (OBS)
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+testCase :[t1=0.010,x4=0.001,Ki=3/4,Ko=1/4]$
+testCase: append(testCase,specSet)$
+display(testCase);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tmp:a4VOsubd$
+ev(ev([0,x0,x0,x1,x2,x3,x4],tmp),eval,testCase)$
+posits:ev(%,testCase),float$
+PosNrm : %/lmax(abs(%)),float;
+ev(ev([0,v00,v0,v1,v2,v3,v4],tmp),eval,testCase)$
+velos:ev(%,testCase),float$
+VelNrm : %/lmax(abs(%)),float;
+ev(ev([0,ev(a00,a0F),a0,a1,a2,a3,0],tmp),eval,testCase)$
+accels:ev(%,testCase),float;
+AccNrm : %/lmax(abs(%)),float;
+ev(ev([ev(-t0,a40s),0,0,t1,t1,2*t1,2*t1+t4],tmp),eval,testCase)$
+times:ev(%,testCase),float$
+TimeNrm : %/ev(t1,testCase),float;
+display(times);
+display(posits);
+display(velos);
+display(accels);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ptemp:[['discrete, times, PosNrm],['discrete, times, VelNrm],['discrete, times,AccNrm]]$
+wxplot2d(ptemp,[title,"Nrm Acceleration, and point position and velocicy"],[grid2d,true],[style,lines],[legend,"Pos","Vel","Acc"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ResetToBase()*/
+$i:'i$ptemp:[]$
+push((posits[7]-posits[1])/4,ptemp)$
+push((posits[7]-posits[1])*3/4,ptemp)$
+for i in [1,3,5,6] do (
+       ftemp : ev(f_x1(t),[x0=posits[i],
+                v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+ t1=times[i+1]-times[i],
+         t=t-times[i]]),
+    P_x1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+    push(P_x1(t),ptemp)
+   )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Position[mm]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1","Pix2L","Pix1H"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ResetToBase()$*/
+i:'i$ptemp:[]$
+for i in [1,3,5,6] do (
+       ftemp : ev(f_v1(t),[x0=posits[i],
+          v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+                t1=times[i+1]-times[i],
+   t=t-times[i]]),
+    P_v1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+    push(P_v1(t),ptemp)
+    )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Velocity[mm/s]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+Special case: asymetric move in symeteric time frame: t4=t0
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(a00=a0,a0F)$
+tmp: append([%],eqSet_4Seg);
+ev(t4=t0, a40s[1][1]);
+tmp:append([%],tmp);
+tmp:subst(ax2_specSet,tmp);
+lineqSet2:subst(linax2_specSet,tmp);
+a4VO22:solve(lineqSet2,[kt4,kx1,kv0,kv1,kv3,ka0,ka3,Ko]);
+a4VOsubd2: append([a4VO22[1][8]],subst(a4VO22[1],linax2_specSet));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+Rascan formulation 
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: comment start ]
+Rascan for
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ax2_A4VT:subst(append(rascanSubs,ax2_specSet),a4VOsubd2),float;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+a Two Segment ax1 solution (uniform a1HLM) can't be matched with an ax2 A4VT, because ax2 demands tIn>tOut and ax1 needs tiSkip < tOut:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ax1_S2VT: subst([t1=tOut,x1=d1Out,v0=v1Out,a1=-a1HLM],eqSym2SegRet[1]);
+ax1_S2VT_Add: subst([t1=tOut+tIn,x1=d1Out+d1In,v0=v1Out+v1Diff,a1=-a1HLM],eqSym2SegRet[1]);
+ax1_S2VT_All: factor(-ax1_S2VT+ax1_S2VT_Add);
+ax2_tIn : solve(ax2_A4VT[2],[Ki]);
+Ki_c : factor(ev(ev(ev(ax2_tIn,[tIESkip=tIn]),ax1_S2VT),ax1_S2VT_All));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Case solutions for given Ki and Ko, or Ki
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+useSolv: a4VOsubd2;
+sSol: [Ki=(0.3535533905932737)*2,Ko=(1-0.75)*2];
+
+sSol: [Ki=(1/3)*2];
+
+sSola4V:subst(append(sSol,ax2_specSet),useSolv),float;
+print("Rascan Formulation:");
+tmp:subst(append(sSol,rascanSubs,ax2_specSet),useSolv),float;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+test case for given Ki and Ko
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+testCase : [t1=0.03, x4=0.01];
+tmp :sSola4V$
+testCase: append(testCase,ax2_specSet)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+pos : [0,x0,x0,x1,x2,x3,x4]$
+posits: ev(ev(ev(pos,testCase),tmp),testCase)$
+PosNrm : %/lmax(abs(%)),float;
+vels: [0,v00,v0,v1,v2,v3,v4]$
+velos:ev(ev(ev(vels,testCase),tmp),testCase)$
+VelNrm : %/lmax(abs(%)),float;
+accs : [0,ev(a00,a0F),a0,a1,a2,a3,0]$
+accels : ev(ev(ev(accs,testCase),tmp),testCase)$
+AccNrm : %/lmax(abs(%)),float;
+ev(ev([ev(-t0,a40s),0,0,t1,t1,2*t1,2*t1+t4],tmp),eval,testCase)$
+times:ev(%,testCase),float$
+TimeNrm : %/ev(t1,testCase),float;
+display(times);
+display(posits);
+display(velos);
+display(accels);
+print("check if ",times[7]-times[6]+times[1]," is 0");
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* Test case Plots */
+ptemp:[['discrete, times, PosNrm],['discrete, times, VelNrm],['discrete, times,AccNrm]]$
+wxplot2d(ptemp,[title,"Nrm Acceleration, and point position and velocicy"],[grid2d,true],[style,lines],[legend,"Pos","Vel","Acc"])$
+
+i:'i$ptemp:[]$
+push((posits[7]-posits[1])/4,ptemp)$
+push((posits[7]-posits[1])*3/4,ptemp)$
+for i in [1,3,5,6] do (
+       ftemp : ev(f_x1(t),[x0=posits[i],
+                v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+ t1=times[i+1]-times[i],
+                t=t-times[i]]),
+    P_x1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+    push(P_x1(t),ptemp)
+   )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Position[mm]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1","Pix2L","Pix1H"])$
+
+i:'i$ptemp:[]$
+for i in [1,3,5,6] do (
+       ftemp : ev(f_v1(t),[x0=posits[i],
+          v0=velos[i],
+                a0=accels[i],
+                a1=accels[i+1],
+                t1=times[i+1]-times[i],
+               t=t-times[i]]),
+    P_v1(t) := if (t > times[i]) and (t <= times[i+1]) then ftemp,
+    push(P_v1(t),ptemp)
+    )$
+wxplot2d(ptemp,[t,times[1],times[7]],[title,"Asymetric 4 segment optimized step move"],[xlabel,"t[s]"],[ylabel,"Velocity[mm/s]"],[grid2d,true],[legend,"ISkip2","OSkip2","OSkip1","ISkip1"])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: subsect start ]
+Turn-around symmetric 4 segment solution
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+eqSet_4SegTurn:[eqSet_4SegFull[1],eqSet_4SegFull[2],eqSet_4SegFull[3],eqSet_4SegFull[4]]; 
+[vm1:'vm1, am1:'am1, xm1:'xm1,v4:'v4,a4:'a4];
+ax1_specSet:[am1=0,xm1=0,a00=a0]$
+/* Eliminate secion 2 (t2=0) for now: [x2:x1,v2:v1,v00:v0]$*/
+/*ax1_specSet:append([x2=x1,v2=v1,a2=a1],ax1_specSet);
+/*symmetric move */
+/*ax1_specSet: append([t3=t1,t4=t0],ax1_specSet);
+/* turnaround */
+ax1_specSet:append([v1=0],ax1_specSet)$
+/* velocity tolerance */
+ax1_specSet:append([v0=vm1-delta],ax1_specSet)$
+ax1_eqSet1:subst(ax1_specSet,eqSet_4SegTurn);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s4V_turnAround :solve(ax1_eqSet1,[t1,x0,x1,a0]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ax1_rascanSubs:[t0=tIn,t1=tOut,x0=d1In,x1=d1Out+d1In,vm1=v1Scan,v0=ax1VISkip,delta=v1Diff,a0=ax1IAcc,a1=-a1Max];
+rscn_ax1_Tol_sol: subst(ax1_rascanSubs,s4V_turnAround[2]),factor;
+rscn_ax1_Tol_sol[3]:factor(%[3]-%[2])$
+rscn_d1Out:%;
+sub_alpha:alpha=a1Max*tIn+2*v1Diff;
+/*a1Max=(alpha-2*v1Diff)/tIn;*/
+solve(%,[a1Max]);
+rscn_ax1_frml :subst(%,rscn_ax1_Tol_sol);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(rscn_ax1_frml[2],[tIn]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tmp: rscn_ax1_Tol_sol[1];
+[v1Out=v1Scan-v1Diff];
+tmp:subst(%,tmp);
+/*
+takeouttEdgeTotal: tOut=tOut-tEdgeTotal;
+subst(%,tmp);
+*/
+rscn_VAdd_ax1:solve(tmp,[v1Diff]),factor;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* VAdd will slow down ax1 which means there ios additional time in tIn */ 
+tAdd=tIn-d1In/v1Scan;
+rscn_tAdd:subst(rscn_ax1_frml[2],%),factor;
+diff(%,v1Diff,1);
+/* to check if in each incremental step, itr worth increasing VAdd to eat up -tEdgeTotal/2: */
+subst([tAdd=t+deltat,v1Diff=v1Diff+deltaVAdd],rscn_tAdd);
+solve(%,[deltat]),expand;
+rscn_VAdd_ax1;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tOvrHd_basic: tOvrHd=tAdd+tOut+(tEdge/2);
+subst(rscn_tAdd,%),factor;
+subst([tEdge=0],%);
+subst([solve(rscn_ax1_Tol_sol[1],[tIn])],%),expand;
+diff(%,v1Diff,1),expand;
+solve(%,[v1Diff]);
+subst([tOut=tOut+deltaT],%);
+solve(%[1],[deltaT]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: title   start ]
+Double optimisation: Fly and Step axes
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* tOvrHd_basic: tOvrHd=tAdd+tOut+(tEdge/2); */
+rscn_tEdge_ax2;
+subst(rscn_tEdge_ax2,tOvrHd_basic);
+
+rscn_tOv:subst(rscn_tAdd,%),expand;
+/* Overhead time is monotonic to VAdd 
+But non-monotonic to tIn*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+rscn_tEdge_ax2;
+subst(rscn_ax1_frml[1],%);
+subst(sub_alpha,%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: section start ]
+Optimisation formulation: simplify the optimisation problem
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: subsect start ]
+d1Out
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([delta=d2Step/a2Max],rscn_tOv);
+rscn_d1Out;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Variation of tOvrHd for tIn and v1Diff
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+rscn_tOv;
+tOv_diff_tIn: diff(rscn_tOv,tIn,1),expand;
+
+solve(tOv_diff_tIn,[tIn]);
+(sqrt(tIn^2+24*delta)/%)^2;
+rscn_Opt_tIn: solve(%,[tIn]),radcan;
+solve(tOv_diff_tIn,[v1Diff]);
+diff(rscn_tOv,v1Diff,1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+tOvrHd is monotonically increasing for v1Diff. All the roots are outside.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+/* tIn - VAdd variation of tOv */
+solve([3^(5/2)*v1Scan-4*sqrt(3)*v1Diff], [v1Diff]);
+solve([9*v1Scan^2-9*v1Diff*v1Scan+2*v1Diff^2], [v1Diff]);
+rscn_WellCond:solve([28*v1Delta-9*v1Scan], [v1Delta]);
+solve(diff(9*v1Scan^2-9*v1Diff*v1Scan+2*v1Diff^2,v1Diff,1),[v1Diff]);
+subst([v1Diff=v1Delta],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsubsect start ]
+Optimal v1Diff for tEdge=0 for given tIn
+   [wxMaxima: subsubsect end   ] */
+
+/* [wxMaxima: comment start ]
+tOvrHd is monotonically increasing for v1Diff. So for overhead time optimization, v1Diff shall be minimized.
+In a region which tOvrHd is limited by ax2 (tEdge>0), increasing v1Diff MAY decrease d1Out without adding to overall tOvrHd.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+rscn_tEdge_ax2;
+subst(rscn_ax1_Tol_sol[1],%);
+tmp: subst([tEdge=0],%),expand;
+(sqrt(tIn^2+24*delta)/4-%)^2;
+rscn_v1Diff_tE0: solve(tmp,[v1Diff]);
+rscn_tIn_tE0: solve(tmp,[tIn]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([tEdge=0],tOvrHd_basic);
+subst(rscn_tAdd,%),factor;
+subst([solve(rscn_ax1_Tol_sol[1],[tOut])],%),expand;
+diff(%,tIn,1);
+solve(%,[tIn]);
+subst([v1Diff=v1Scan*Kv],%),radcan;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: subsect start ]
+Variation of d1Out for tIn and v1Diff    
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: input   start ] */
+rscn_d1Out;
+diff(rscn_d1Out,v1Diff,1);
+solve(%,[v1Diff]),radcan;
+solve((-63*a1Max^2*tIn^2-36*a1Max*v1Scan*tIn+4*v1Scan^2),[tIn]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: section start ]
+Generalised formulation: solve the two systems together, then formulate the optimisation problem
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: input   start ] */
+/* forming a 2x eq set to solve for tIn and tOut: */
+
+tmp:[rscn_ax1_Tol_sol[1],tIn=tInFn(tOut,tEdgeTotal,a2Max,ax2Step)];
+assuming:[tEdgeTotal=0];
+tmp:subst(%,tmp);
+substituting:[ax2Step=delta*a2Max,tOut=t[o]*4/2-3/2*0,tIn=t[i],v1Scan=v+3/2*Delta,a1Max=a,v1Diff=Delta/2];
+tmp: subst(substituting,tmp);
+ax1_tIO_eq: solve(tmp[1],[t[o]])[1];
+ax2_tIO_eq : solve(tmp[2],[t[i]])[1];
+assume((3*tOut)/2+tIn>0);
+rscn_tIO_eq : [ax1_tIO_eq,ax2_tIO_eq];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(ax1_tIO_eq,ax2_tIO_eq);
+tmp2 : %-second(second(%));
+/*subst(theta=S/a-2*Delta/a,%)*/;
+%^2;
+tmp: ratnumer(%-second(%));
+t[i] < second(solve(first(tmp2),t[i])[1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+1/ax1_tIO_eq;
+expand(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(tmp,[t[i]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+%[1];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+assume([a>0,x>0]);
+solve(a*x^4+b*x^3+c*x^2-d=0,[x]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: section start ]
+Asymmetric axis1 return path    
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: comment start ]
+In case of tEdge>0, the symmetric double optimization solution leads to acceleration discontinuity at start and end of the edgr move, as axis 1 needs to stop for axis 2 to catch up.
+This issue can be addressed by finding a different solution for acceleration of axis 1, while keeping maximum decceleration ti minimise the outrun distance, d1Out.
+This part of the trajectory can be overriden without invalidating the rest of the solution, using the known times (tOut and tEdge) 
+Problem can be defined as below:
+Find d1Edge1, v1Edge1, d1Edge2, v1Edge2, d1Out2  so that: ax1 accelerates throgh Edge1, Edge2 and Out2 phases to v1Out at potition 0
+d1Out2 + d1Edge1 + d1Edge2 = d1Out
+
+
+As it turns out that with tEdge1=tEdge2=tEdge/2 the solution is symetric, making ax1 move back and forth with a1Max acceleration which is not acceptable.
+On the other hand, the Asymmetric tEdge dividing doesnt lead to a viable solution.
+
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ResetToBase()$
+specSet:[];
+
+[x0:0, v0:0, a0:a1Max]$
+
+[x1:d1Edge1, v1:v1Edge1, t1:tEdge1]$
+
+eq00: a0=p_a0_1(x0,v0,x1,v1,t1),factor$
+eq01: a1=p_a1_1(x0,v0,x1,v1,t1),factor$
+
+[x2: x1+d1Edge2, v2: v1Edge2, t2: tEdge2]$
+
+eq10: a1=p_a0_1(x1,v1,x2,v2,t2),factor$
+eq11: a2=p_a1_1(x1,v1,x2,v2,t2),factor$
+
+[x3: d1Out, t3: tOut]$
+
+eq20: a2=p_a0_1(x2,v2,x3,v3,t3),factor$
+eq21: a3=p_a1_1(x2,v2,x3,v3,t3),factor$
+
+[a1: -a0,tEdge2:tEdge-tEdge1]$
+
+eqSet_Ax1Asym:ev([eq00,eq01,eq10,eq11,eq20,eq21]);
+/*
+[xm1:0,vm1:0,am1:0,v4:0,a4:0]$
+eqSet_4Seg:ev([eq00,eq01,eq20,eq21,eq30,eq31]);
+*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sln_Ax1Asym: solve(eqSet_Ax1Asym,[a2,tEdge1,d1Edge1,v1Edge1,d1Edge2,v1Edge2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sln_N:2;
+factor(sln_Ax1Asym[sln_N][1]);
+factor(sln_Ax1Asym[sln_N][2]);
+fm_d1Edge1: factor(sln_Ax1Asym[sln_N][3]);
+fm_v1Edge1: factor(sln_Ax1Asym[sln_N][4]);
+fm_d1Edge2: factor(sln_Ax1Asym[sln_N][5]);
+fm_v1Edge2: factor(sln_Ax1Asym[sln_N][6]);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

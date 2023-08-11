@@ -1,0 +1,62 @@
+
+#include "RaScan_CS_def.pmc"
+#include "RaScan_Interface_def.pmc"
+
+
+;Setup does address the current CS which should be already selected BEFORE setuyp runs.
+csActive=5
+&5
+
+devCMD=stTerminated
+
+m1MOVE = 0
+m1MRES = 0.0001
+m1PoffUsr = 0
+m1X0Usr = 0
+
+m2MOVE = 0
+m2MRES = 0.00002
+m2PoffUsr = 0
+m2X0Usr = 0
+
+m3MOVE = 0
+m3MRES = 0.0001 
+m3PoffUsr = 0
+m3X0Usr = 0
+
+m4MOVE = 0
+m4MRES = 360/2368000;  1/6577.777778 
+m4PoffUsr = 0
+m4X0Usr = 0
+
+ax1OffUsr=0
+ax2OffUsr=0
+ax3OffUsr=0
+
+ax1HLMUsr=999999
+ax2HLMUsr=999999
+ax3HLMUsr=999999
+
+ax1LLMUsr=-999999
+ax2LLMUsr=-999999
+ax3LLMUsr=-999999
+
+; set Values 
+csAngleXZ=45;degrees
+csGearTX=360000; 360; degrees/mm
+
+d1Span=10 ;EGU 40
+a1HLM=160 ;EQU/s^2 
+tOutLLM=25/1000; sec
+tInLLM=5/1000;sec
+v1Out=10; v1Out at start point d1SpanOBS/tMid;EGU/s
+v1Delta=0; v1Out at mid point EGU/s
+;d1In=0;
+
+lineN=0
+lineEnd=100
+d2Step=0.1 ;EGU
+
+a2HLM=2
+
+devCMD=stStandby;

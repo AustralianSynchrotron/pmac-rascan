@@ -1,0 +1,390 @@
+# rascanBase template
+#
+#
+
+record(waveform, "$(P):RSCN:SYS_WARNS")
+{
+  field(DESC, "System Warnings")
+  field(PINI, "YES")
+  field(FTVL, "CHAR")
+  field(NELM, "511")
+}
+
+record(waveform, "$(P):RSCN:SYS_ERRORS")
+{
+  field(DESC, "System Errors")
+  field(PINI, "YES")
+  field(FTVL, "CHAR")
+  field(NELM, "255")
+}
+
+
+record (stringout, "$(P):RSCN:EXSOLVE") {
+  field(DESC, "Executes ./rscnslvt.sh")
+  field (DTYP, "EXSH")
+  field (OUT,  "@./rscnslvt.sh $(P):RSCN")
+}
+
+record(mbbi, "$(P):RSCN:CSPRFX") {
+  field(DESC, "Rascan Coordinate System No.")
+  field(ZRST, "0_Invalid")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "1_Invalid")
+  field(ONSV, "NO_ALARM")
+  field(TWST, "2_Invalid")
+  field(TWSV, "NO_ALARM")
+  field(THST, "&3_notUsed")
+  field(FRST, "&4")
+  field(FVST, "&5")
+  field(SXST, "&6")
+  field(SVST, "&7_notUsed")
+  field(EIST, "&8_notUsed")
+  field(NIST, "&9_notUsed")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getIntVar(P2090) $(PORT)")
+  field(DISS, "INVALID")
+  field(SCAN, "2 second")
+}
+
+record(mbbi, "$(P):RSCN:CS_STATUS") {
+  field(DESC, "Rascan Coordinate System No.")
+  field(ZRST, "0_Idle")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "1_Running")
+  field(ONSV, "NO_ALARM")
+  field(TWST, "2_Error")
+  field(TWSV, "NO_ALARM")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getIntVar(P2091) $(PORT)")
+  field(DISS, "INVALID")
+  field(SCAN, "1 second")
+}
+
+
+#<<191003 alternative method for getting the status INPROG
+
+
+# free form command to PMAC
+record(stringout, "$(P):RSCN:PMACCMD") {
+  field(VAL,"PE")
+  field(FLNK, "$(P):RSCN:PMACRESP")
+  field(SCAN, "1 second")
+  }
+
+# Read a free form command response
+# Read the "Program Executing line" using online command (PE)
+record(stringin, "$(P):RSCN:PMACRESP") {
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto freeFormCMD($(P):RSCN) $(SPORT)")
+  field(PINI,"YES")
+  field(FLNK, "$(P):RSCN:PARSEINPROG")
+}
+
+# Axis is in closed loop if i103=3501, i203=3502 ... i803=3508
+record(scalcout, "$(P):RSCN:PARSEINPROG") {
+  field(INAA, "$(P):RSCN:PMACRESP")
+  field(INBB, "20")
+  field(OCAL, "AA[1,2]==BB?1:0")
+  field(OUT, "$(P):RSCN:EN_INPROG_ALT PP")
+  field(DOPT, "Use OCAL")
+  field(OOPT, "Every Time")
+}
+
+record(ai, "$(P):RSCN:EN_INPROG_ALT") {
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+}
+
+#>>191003
+
+record(mbbiDirect, "$(P):RSCN:CSST:status1") {
+  field(SCAN, "2 second")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto csGetStatus(&5??,$(P):RSCN:CSST) $(PORT)")
+}
+
+record(mbbiDirect, "$(P):RSCN:CSST:status2") {
+}
+
+record(mbbiDirect, "$(P):RSCN:CSST:status3") {
+}
+
+record(mbbiDirect, "$(P):RSCN:CSST:status4") {
+}
+
+record(mbbiDirect, "$(P):RSCN:CSST:status5") {
+}
+
+record(calc, "$(P):RSCN:EN_INPROG") {
+#  field(INPA, "$(P):RSCN:CSST:status2.VAL CP MS")
+#  field(CALC, "(A>>8)&1 ? 1 : 0")  
+  field(INPA, "$(P):RSCN:CS_STATUS.VAL CP MS")
+  field(CALC, "A&1 ? 1 : 0")  
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(SCAN, ".5 second")
+  field(MDEL, "-1")
+}
+
+record(scalcout, "$(P):RSCN:RUNSTR") {
+  field(DESC, "Rascan program execution string")
+  field(SCAN, "Passive")
+  field(INAA, "$(P):RSCN:CSPRFX CP")
+  field(CALC, "AA+'b20r'")
+  field(DTYP, "Soft Channel")
+  field(OUT, "$(P):RSCN:RUNPROG")
+  field(OOPT, "Every Time")
+  field(DOPT, "Use CALC")
+}
+
+record(stringout, "$(P):RSCN:RUNPROG") {
+  field(DESC, "Execute Rascan program")
+  field(DTYP, "stream")
+  field(SDIS, "$(P):RSCN:EN_INPROG PP MS")
+  field(VAL, "Uninitialized!")
+  field(OUT, "@pmac.proto sendString $(PORT)")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+  field(FLNK, "$(P):RSCN:RESET_CMD" )
+}
+
+record(ao, "$(P):RSCN:RESET_CMD") {
+  field(DESC,"override/reset cmd")
+  field(VAL,"0")
+  field(OUT, "$(P):RSCN:DEV_CMD PP")
+}
+
+record(calc, "$(P):RSCN:EN_CSSETUP") {
+  field(CALC, "!A")
+  field(INPA, "$(P):RSCN:EN_INPROG CP")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+}
+
+record(mbbi, "$(P):RSCN:DEV_ERROR") {
+  field(DESC, "Rascan devError")
+  field(ZRST, "-")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "er_v1_Delta")
+  field(ONSV, "MINOR")
+  field(TWST, "er_d1_In")
+  field(TWSV, "MINOR")
+  field(THST, "er_TrjBuilder")
+  field(THSV, "MINOR")
+  field(FRST, "er_ERROR4")
+  field(FRSV, "MINOR")
+  field(FVST, "er_a1_In")
+  field(FVSV, "MINOR")
+  field(SXST, "er_Range1")
+  field(SXSV, "NO_ALARM")
+  field(SVST, "er_Range2")
+  field(SVSV, "NO_ALARM")
+  field(EIST, "er_ERROR8")
+  field(EISV, "NO_ALARM")
+  field(NIST, ".")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getIntVar(P2055) $(PORT)")
+  field(DISV, "0")
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(mbbi, "$(P):RSCN:DEV_STATE") {
+  field(DESC, "Rascan devState")
+  field(ZRST, "blank")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "isTerminated")
+  field(ONSV, "NO_ALARM")
+  field(TWST, "isStandby")
+  field(TWSV, "NO_ALARM")
+  field(THST, "isCompiled")
+  field(FRST, "isReady")
+  field(FVST, "isSetting")
+  field(SXST, "isSet")
+  field(SVST, "isRunning")
+  field(EIST, "reserved")
+  field(NIST, "isResetting")
+  field(DTYP, "stream")
+  field(INP, "@pmac.proto getIntVar(P2040) $(PORT)")
+  field(DISV, "0")
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(mbbo, "$(P):RSCN:DEV_CMD") {
+  field(DESC, "Rascan devCommand")
+  field(ZRST, "---")
+  field(ZRSV, "NO_ALARM")
+  field(ONST, "goTerminated")
+  field(ONSV, "NO_ALARM")
+  field(TWST, "goStandby")
+  field(TWSV, "NO_ALARM")
+  field(THST, "goCompiled")
+  field(FRST, "goReady")
+  field(FVST, "---")
+  field(SXST, "goSet")
+  field(SVST, "goRunning")
+  field(EIST, "reserved")
+  field(NIST, "goReset")
+  field(DTYP, "stream")
+  field(OUT, "@pmac.proto setIntVar(P2000) $(PORT)")
+#  field(DISV, "0")
+#  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+#  field(DISS, "INVALID")
+}
+
+### This record outs to EXSOLVE
+record(calcout, "$(P):RSCN:DOSOLVE") {
+  #field(SCAN, "1 second")
+  field(CALC, "A>2 && C==2 && B ? 1 : 0")
+  field(INPA,"$(P):RSCN:DEV_CMD CP")
+  field(INPB, "$(P):RSCN:EN_INPROG CP")
+  field(INPC,"$(P):RSCN:DEV_STATE CP")
+  field(OUT, "$(P):RSCN:EXSOLVE PP")
+  field(OOPT, "Transition To Non-zero") 
+}
+
+record(calc, "$(P):RSCN:EN_ALWAYS") {
+  field(CALC, "1")
+  field(SCAN, "1 second")
+  field(MDEL, "-1")
+  field(PINI, "YES")
+}
+
+record(calc, "$(P):RSCN:EN_NEVER") {
+  field(PINI, "YES")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+}
+
+record(calc, "$(P):RSCN:EN_TRAJSET") {
+  field(INPA, "$(P):RSCN:DEV_STATE CP MS")
+  field(CALC, "(A>1 && A<3) ? 1 : 0")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+  field(DISV, "0")  
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(calc, "$(P):RSCN:EN_MONITOR") {
+  field(CALC, "(A>1 && A<4) ? 1 : 0")
+  field(INPA, "$(P):RSCN:DEV_STATE CP MS")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+  field(DISV, "0")  
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(calc, "$(P):RSCN:EN_DISARMED") {
+  field(CALC, "(A<5) ? 1 : 0")
+  field(INPA, "$(P):RSCN:DEV_STATE CP MS")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+  field(DISV, "0")  
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(calc, "$(P):RSCN:EN_CTRL") {
+  field(DESC,"Control command processing")
+  field(CALC, "(A!=B) ? 1 : 0")
+  field(INPA, "$(P):RSCN:DEV_STATE CP MS")
+  field(INPB, "$(P):RSCN:DEV_CMD CP MS")
+  field(DISV, "0")  
+  field(SDIS, "$(P):RSCN:EN_INPROG CP MS")
+  field(DISS, "INVALID")
+}
+
+record(calc, "$(P):RSCN:EN_GLOBAL") {
+  field(SCAN, "1 second")
+  field(INPA, "$(P):RSCN:EN_TRAJSET CP")
+  field(INPB, "$(P):RSCN:EN_INPROG CP")
+  field(CALC, "(A || !B) ? 1 : 0")
+  field(LOW, "0.5")
+  field(LSV, "INVALID")
+  field(MDEL, "-1")
+  field(DISS, "INVALID")
+}
+
+# AutoSync forces the mapped variable to sync with devices readback every cycle. This makes it a one to one map with main PV
+# rather than having to work with RBV and SET PV's 
+# drawback is that the desired value would not be retained in any of the PVs if devices value does not accept the change 
+# or deviates from setpoint for any reason. This mode poses cvhallenges with AutoRestore hence default value is 0
+record(ao, "$(P):RSCN:EN_AUTOSYNC") {
+  field(MDEL, "-1")
+  field(PINI, "YES")
+  field(VAL, "0")
+}
+
+record(stringout, "$(P):RSCN:ABORT") {
+  field(DESC, "ABORT Rascan program")
+  field(DTYP, "stream")
+  field(VAL, "&4A &5A &6A")
+  field(OUT, "@pmac.proto sendString $(PORT)")
+  field(PINI, "NO")
+  field(DISS, "INVALID")
+}
+
+########### GUI service records: 
+
+record(calc,"$(P):RSCN:BL_INPROG") {
+  field(INPA, "$(P):RSCN:EN_INPROG CP")
+  field(INPB, "$(P):RSCN:BL_INPROG")
+  field(CALC, "!B & A")
+}
+record(calc,"$(P):RSCN:BL_TRAJSET") {
+  field(INPA, "$(P):RSCN:EN_TRAJSET CP")
+  field(INPB, "$(P):RSCN:BL_TRAJSET")
+  field(CALC, "!B & A")
+}
+record(calc,"$(P):RSCN:BL_MONITOR") {
+  field(INPA, "$(P):RSCN:EN_MONITOR CP")
+  field(INPB, "$(P):RSCN:BL_MONITOR")
+  field(CALC, "!B & A")
+}
+record(calc,"$(P):RSCN:BL_CSSETUP") {
+  field(INPA, "$(P):RSCN:EN_CSSETUP CP")
+  field(INPB, "$(P):RSCN:BL_CSSETUP")
+  field(CALC, "!B & A")
+}
+########### GUI service records.
+
+
+############################
+# Busy record for sscan service
+
+record(busy,"$(P):RSCN:RUN") {
+  field(DESC, "Start running scan")
+  field(OUT,"$(P):RSCN:RST_BUSY")
+}
+### This record ALWAYS outs to CTRLU
+record(calcout, "$(P):RSCN:RUN_CTRLU") {
+  field(SCAN, "1 second")
+  field(CALC, "A>0 ? 7 : 0")
+  field(INPA,"$(P):RSCN:RUN")
+  field(OUT, "$(P):RSCN:DEV_CMD PP")
+  field(OOPT, "Transition To Non-zero") 
+}
+
+
+record(calcout, "$(P):RSCN:RST_BUSY") {
+
+  field(SCAN,"2 second")
+  field(INPA, "$(P):RSCN:DEV_STATE")
+  field(INPB, "$(P):RSCN:EN_INPROG")
+  field(CALC, "(A<5 || A>7 || !B) ? 0 : 1")  
+  field(OUT, "$(P):RSCN:RUN CA")
+  field(OOPT, "When Zero") 
+  field(DISV, "0")  
+  field(SDIS, "$(P):RSCN:RUN CP MS")
+}
+
+
+#end

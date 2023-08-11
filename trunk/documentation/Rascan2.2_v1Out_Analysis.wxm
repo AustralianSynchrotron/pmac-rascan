@@ -1,0 +1,179 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.08.1+git ] */
+
+/* [wxMaxima: comment start ]
+Rascan 2 .0 + analysis: Optimise  v1Scan and v1Out for tLine and d1Out
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+pdelta: d2Step/a2Max$
+ptau: (sqrt(tIn^2+24*delta)-3*tIn)/8$
+tEdge_eq: tEdge=4*ptau-2*tOut;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tIn_f_d2InMax:  tIn = sqrt(6) * sqrt(d2In / a2Max);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tMid_eq: tMid*v1Scan + tIn*(v1Scan+v1Out)/2 = d1Span;
+tMid_eq: solve(tMid_eq,[tMid])[1];
+tIn_eq: tIn = tIn;
+alpha : (a1Out * tIn + 2 * v1Diff)$
+tOut_eq: tOut = (2 * v1Out * tIn) / alpha;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+NOTE: a1Out is positive, but in reality it is negative.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+tLine_eq: tLine = 2 * tOut + 2 * tIn + tEdge + tMid;
+tOvrHd_eq: tOvrHd = tLine - d1Span/v1Scan;
+tOvrHd=expand(2*((tIn*(v1Scan-v1Out))/(3*v1Scan)+sqrt(tIn^2+24*delta)/4-(3*tIn)/4));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+v_mode: [v1Out=v1Scan-v1Diff];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Rest is optimisation solution
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([tEdge_eq],tLine_eq);
+tLine_simple: subst(v_mode,expand(subst([tMid_eq,tIn_eq],subst([tOut_eq],%))));
+tLine_Edge: expand(tLine_simple);
+
+tOvrHd_simple: expand(subst(tLine_simple,tOvrHd_eq));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([tEdge=0],tLine_eq);
+subst([tMid_eq,tIn_eq],subst([tOut_eq],%));
+subst(v_mode,%);
+tLine_NoEdge: ratsimp(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Now the problem of optimisation can be defined.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+diff(second(tLine_NoEdge),v1Scan,1);
+dtLine_NoEdge_dv1Scan:ratsimp(%);
+v1Out_opt: solve(%, [v1Scan]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Now calculating the derivative for v1Diff
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+diff(second(tLine_NoEdge),v1Diff,1);
+dtLine_dv1Diff:ratsimp(%);
+solve(%, [v1Diff]);
+v1Diff_opt: radcan(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+This is a GREAT result if holds, it means that total line time is strictly decreasing for v1Diff regardless !!!!
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+testCase: [delta=0.002/0.0250,v1Diff=0.05/10,a1Out=5/100,tIn=0.4900,d1Span=0.25];
+
+
+v1HLM:0.25/10;
+v1LLM:0.25*0.5/10*10;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(testCase,tLine_Edge);
+toplot: second(ratsimp(%));
+solve([%], [v1Out]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(testCase,d_tLine_NoEdge);
+toplot: second(ratsimp(%));
+solve([%], [v1Out]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+wxplot2d(toplot, [v1Out,0,v1HLM])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+v1Diff (j1HLM)
+
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+a1Out_ : a1Out=a/2 / tIn;
+solve(%,[a]);
+a1Out: ev(second(a1Out_));
+
+v1Scan_ : v1Scan=-(-a-2*b)/2;
+solve(%,[b]);
+v1Scan: ev(second(v1Scan_));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+/*
+a1Out_ : a1Out=a / tIn;
+solve(%,[a]);
+a1Out: ev(second(a1Out_));
+
+v1Scan_ : v1Scan=(-a+b);
+solve(%,[b]);
+v1Scan: ev(second(v1Scan_));
+*/
+v1Out:v1Scan-v1Diff;
+a1In : 2*v1Diff/tIn;
+tOut : 2*v1Out/(a1Out-a1In);
+j1Out : ratsimp((a1Out - a1In)/tOut);
+j1In : ratsimp(a1In/tIn);
+
+j1In_eq : j1In=j1Out;
+solve(j1In_eq,[v1Diff]);
+v1Diff_mid : ratsimp(second(%[2]));
+j1In_mid : ratsimp(subst([v1Diff=v1Diff_mid],j1In));
+
+
+
+j1HLM- j1Out;
+factor(%);
+num(%);
+eq_tmp : ratsimp(%);
+solve(eq_tmp,[v1Diff]);
+ratsimp(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+j1In_tIn: j1In*  tIn^2;
+j1Out_tIn: ratsimp(j1Out*tIn^2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diff(j1Out,v1Diff);
+solve(%,[v1Diff]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diff(j1In,v1Diff);
+solve(%,[v1Diff]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+tOvrHd=(tIn*v1Diff)/(3*v1Scan)+sqrt(tIn^2+24*delta)/4-(3*tIn)/4;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

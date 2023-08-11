@@ -1,0 +1,39 @@
+#RELEASE Location of external products
+# Run "gnumake clean uninstall install" in the application
+# top directory each time this file is changed.
+#
+# NOTE: The build does not check dependancies on files
+# external to this application. Thus you should run
+# "gnumake clean uninstall install" in the top directory
+# each time EPICS_BASE, SNCSEQ, or any other external
+# module defined in the RELEASE file is rebuilt.
+
+TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
+
+# Note: Bundle is defined when when this module is prebuilt.
+# Leave blank so that module remains compatible with formal build system.
+#
+BUNDLE=/controls_sw/prod/centos6-64/bundle_0016
+
+#SUPPORT= /
+
+ASYN=$(BUNDLE)/epics/asyn
+
+CALC=$(BUNDLE)/epics/calc
+
+MOTOR=$(BUNDLE)/mc/motor
+
+STREAM=$(BUNDLE)/epics/stream
+
+BUSY=$(BUNDLE)/epics/busy
+
+STD=$(BUNDLE)/epics/std
+
+SNCSEQ=$(BUNDLE)/epics/seq
+
+EXECUTESHELL=$(BUNDLE)/epics/executeShell
+
+# EPICS_BASE usually appears last so other apps can override stuff:
+EPICS_BASE=$(BUNDLE)/epics/base
+
+-include $(TOP)/configure/RELEASE.private

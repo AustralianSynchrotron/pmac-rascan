@@ -1,0 +1,339 @@
+#include "RaScan2_Interface_def.pmc"
+#include "RaScan_CS_def.pmc"
+
+;;;============== RasaterScan Trajectory Definitions ==================
+;;== Scan definition
+
+&6 A
+&5 A
+&4 A; abort
+
+;Undefine All
+END Gather
+DEL Gather
+DEL Rotary
+I5 = 0 ; Disable ALL PLCs
+
+;----------------------------------------
+
+;;;============ EXECUTE ==================
+open prog 20
+clear
+
+    csStatus = M(5080+csActive*100) ; Program running bit
+
+N10 ;stResetting
+    devState=stResetting
+    devCMD=stStandby
+    devError=erNONE
+N20 ;stStandby
+    devState=stStandby
+    if (devError=erNONE)
+        devError=erStandby
+    endif
+
+    ;flag solution invalid
+    devSLVD=0
+
+    ; wait here for solution to be valid
+    while (devSLVD!=1)
+        if (devCMD=stTerminated)
+            GOTO40
+        endif
+    endwhile
+
+    devError=erNONE
+
+    ;; {{ ------------------- Compiling: PVT calculations
+    v1Out=v1Scan-v1Diff;
+    palpha=(a1Out*tIn+2*v1Diff);
+    d1In=((3*v1Out+2*v1Diff)*tIn)/3;
+    d1Out=(4*(palpha-v1Diff)*v1Out*v1Out*tIn)/(3*palpha*palpha);
+    ;(o585)
+    a2Out=(a2Max*tEdge)/(2*tOut+tEdge);
+    ;(d2InEq)
+    d2In=(a2Max*tIn*tIn)/6;
+    ;(v2InEq)
+    v2In=(a2Max*tIn)/2;
+    d2Out=(tOut*(a2Out*tOut+2*a2Max*tOut+3*a2Max*tIn))/6;
+    v2Out=v2In+tOut*(a2Max+a2Out)/2;
+
+    d2Edge=(d2Step-2*d2In-2*d2Out);
+    if (d2Edge<pE2Res)
+       tEdge=0;
+    endif
+
+    if (tEdge<0.002)
+       d2Edge=0;
+       tEdge=0;
+       d2Out=d2Step/2-d2In;
+    endif
+
+    tOvrHd = 2*(tOut+(tEdge/2)+(v1Diff*tIn)/(3*v1Scan));
+    ;; }} -------------------- Compiling: PVT calculations
+
+    ;; {{ -------------------- Compiling: Validation
+    if (tEdge<0)
+        devError=erTrjBuilder; '(tEdge<0)';
+    endif
+    if (d2In < 0)
+        devError=erTrjBuilder;'(d2In < 0)';
+    endif
+    if (tIn < tInLLM)
+        devError=erERROR8;
+    endif
+    if (d2Edge < 0)
+        devError=erTrjBuilder; 'd2Edge < 0';
+    endif
+
+    a1In=v1Diff/tIn*2
+    if (a1In > a1HLM*1.01)
+        devError=era1In
+    endif
+
+;------------------------
+    if (tIn > tAHLM)
+        devError=erTrjBuilder;
+    endif
+    if (tOut > tAHLM)
+        devError=erTrjBuilder;
+    endif
+    if (tEdge > tAHLM)
+        devError=erTrjBuilder;
+    endif
+
+    ;; }} -------------------- Compiling: Validation
+
+    if (devError!=erNONE)
+        GOTO20
+    endif
+
+N25 ;entering stCompiled which now means stCompiled, wait here for user command
+
+    devState=stCompiled
+;   devCMD=stCompiled
+    while (devCMD<stReady)
+        if (devCMD=stStandby)
+            GOTO20
+        endif
+        if (devCMD=stTerminated)
+            GOTO40
+        endif
+    endwhile
+
+    ; Now validate if the scan range is achievable
+    devError=erNONE
+
+    if (d1Span<2*d1In)
+        devError=erd1In;
+    endif
+
+;----------------
+    tMid=(d1Span-2*d1In)/v1Scan;
+    
+    GoSub50 ;Check tMid and set lineSubEnd
+    
+;----------------
+
+    ;Check Boundaries and SOFT limits. If Inconsistent then
+    pX0= d1Out + (d1Centre+d1Span/2)- ax1OffUsr;
+    if (pX0> ax1HLMUsr)
+        devError=erRange1;
+    endif
+    pX0= -d1Out + (d1Centre-d1Span/2)- ax1OffUsr;
+    if (pX0< ax1LLMUsr)
+        devError=erRange1;
+    endif
+    pY0=d2Step*(lineN-1)+d2Start-ax2OffUsr;
+    pY1=d2Step*(lineEnd+1)+d2Start+d2In+d2Out-d2Edge/2/2-ax2OffUsr;
+    if (d2Step < 0)
+        if ( pY0 > ax2HLMUsr)
+            devError=erRange2;
+        endif
+        if ( pY1 < ax2LLMUsr)
+            devError=erRange2;
+        endif
+    else
+        if ( pY1 > ax2HLMUsr)
+            devError=erRange2;
+        endif
+        if ( pY0 < ax2LLMUsr)
+            devError=erRange2;
+        endif
+    endif
+
+    d1IndHLM=(-(tMidLLM+0.001)*v1Scan+d1Span-2*d1In);
+    d1IndL=0;
+    d1IndR=0;
+    tLine = 2 * tOut + 2 * tIn + tEdge + tMid + lineSubEnd * tHLM
+    tScan = tLine*(lineEnd+1-lineN)
+    ;devError=devError+1 ;DEBUG CODE
+
+    if (devError!=erNONE)
+    ; Go back to stCompiled
+        devCMD=stCompiled
+        GOTO25 ;retry setting up
+    endif
+    devState=stReady
+    while (devCMD<stSet)
+        if (devCMD=stStandby)
+            GOTO20
+        endif
+        if (devCMD=stCompiled)
+            GOTO25
+        endif
+        if (devCMD=stTerminated)
+            GOTO40
+        endif
+    endwhile
+    devState=stSetting
+    ;; {{ -------------------- Setting
+    lineDir=1-2*(lineN % 2);    
+    pX0=(1-lineDir)/2*d1Span -lineDir*d1Out + (d1Centre-d1Span/2) - ax1OffUsr;
+    ;first pass
+    ABS RAPID X (pX0) Y (pY0); Decel Pass ORIGIN is the outer pass point
+
+; Running.......
+N30
+    devState=stSet
+    while (devCMD<stRunning)
+        if (devCMD=stStandby)
+            GOTO20
+        endif
+        if (devCMD=stCompiled)
+            GOTO25
+        endif
+        if (devCMD=stTerminated)
+            GOTO40
+        endif
+    endwhile  ;in stSet, waiting for stRunning or AbortState
+
+    ;; }} -------------------- Setting
+
+    devState=stRunning
+
+    ;; {{ -------------------- Running: initial ramp up
+    ;; }} -------------------- Running: initial ramp up
+
+    ;; {{ -------------------- Running: main loop
+
+    while (lineN<lineEnd+1)
+        ; Inner scan loop raster direction: 1 is forward and -1 is reverse
+        devState=stRunning
+; OSkip accel
+        INC PVT (tOut*1000) X (lineDir*d1Out): (lineDir*v1Out) Y (d2Out):(v2In)
+; ISkip accel
+        INC PVT (tIn*1000) X (lineDir*d1In): (lineDir*v1Scan) Y (d2In):(0)
+; Line forward
+        ;One tMid
+        INC PVT (tMid*1000) X (lineDir*tMid*v1Scan): (lineDir*v1Scan) Y (0):(0)
+        ;and  lineSubEnd of tHLM
+        lineSubN=0
+        while (lineSubN < lineSubEnd)
+            INC PVT (tHLM*1000) X (lineDir*tHLM*v1Scan): (lineDir*v1Scan) Y (0):(0)
+            lineSubN=lineSubN+1
+        endwhile
+
+; ISkip deccel
+        INC PVT (tIn*1000) X (lineDir*d1In): (lineDir*v1Out) Y (d2In):(v2In)
+
+;; {{ -------------------- Running: Indentation control
+        if (lineDir<0)
+            if (d1IndLReq+d1IndR < d1IndHLM)
+                d1IndL=d1IndLReq;
+            else
+                ; signal the indenter to compensate into next indent
+                d1IndL=d1IndHLM-d1IndR;
+            endif
+        else
+            if (d1IndL+d1IndRReq < d1IndHLM)
+                d1IndR=d1IndRReq;
+            else
+                ; signal the indenter to compensate into next indent
+                d1IndR=d1IndHLM-d1IndL;
+            endif
+                
+        endif
+            
+        d1IndTotal= d1IndL+d1IndR;                
+        tMid=(d1Span-d1IndTotal-2*d1In)/v1Scan;
+        
+        GoSub50
+
+;; }} -------------------- Running: Indentation control
+        lineN=lineN+1
+        lineDir=1-2*(lineN % 2);
+        tScan = tLine*(lineEnd+1-lineN)
+; OSkip deccel
+        INC PVT (tOut*1000) X (-lineDir*d1Out): (0) Y (d2Out):(v2Out)
+; ESkip
+        if (tEdge>0)
+            INC PVT (tEdge*1000) X (0):(0) Y (d2Step-2*d2In-2*d2Out):(v2Out)
+        endif
+
+        if (devCMD=stStandby)
+            GOTO20
+        endif
+        if (devCMD=stCompiled)
+            GOTO25
+        endif
+        if (devCMD=stSet)
+            GOTO30
+        endif
+        if (devCMD=stTerminated)
+            GOTO40
+        endif
+
+    endwhile
+
+    ;; }} -------------------- Running: main loop
+
+    ; forced stStandby
+    devCMD=stCompiled
+    GOTO25 ;Go back stCompiled
+
+
+    ; Stopping.....
+N40
+    devState=stTerminated
+    ; to flag the CS to re-sync its setpoint with the actual position NOW
+    ; this won't work if the motion program is ternminated by pmac due to abort
+    m1MOVE=1
+    m2MOVE=1
+    m3MOVE=1
+    m4MOVE=1
+;Finish: stFault or Aborting or Terminating
+
+
+N50
+; sub tMid : -> lineSubEnd 
+;----------------
+    lineSubEnd=0
+    if (tMid > tHLM)
+        while (tMid > tHLM)
+            lineSubEnd=lineSubEnd+1;
+            tMid=tMid - tHLM;
+        endwhile
+        ;now if tMid is too small, add one tHLM to tMid and deduct one from subsegments
+        if(tMid < tAHLM-tHLM)
+            tMid=tMid+tHLM;
+            lineSubEnd=lineSubEnd-1;
+        endif
+    endif
+    ;tMid should be less than PVT acceptable limit
+    if (tMid > tAHLM)
+        devError=erERROR4;
+    endif
+    if (tMid < 0.002)
+        devError=erd1In;
+    endif
+return
+
+;----------------
+
+Close ; Close program buffer
+
+;----------------------------------------------------------
+I15 =  0  ;Deg (not Rad) Control for User Trig. Functions
+i5350=1
+I5 = 3 ; Enable Background PLCs

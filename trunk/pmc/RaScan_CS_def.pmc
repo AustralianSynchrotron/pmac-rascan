@@ -1,0 +1,78 @@
+;;;============== RasaterScan Coord Definitions ==================
+
+;Coordinate system definition
+;
+
+#define XPosCUsr	Q7
+#define YPosCUsr	Q8
+#define ZPosCUsr	Q9
+
+#define XVelCUsr	Q17
+#define YVelCUsr	Q18
+#define ZVelCUsr	Q19
+
+#define m1PosCRaw	P1
+#define m2PosCRaw	P2
+#define m3PosCRaw	P3
+#define m4PosCRaw	P4
+
+#define m1VelCRaw	P101
+#define m2VelCRaw	P102
+#define m3VelCRaw	P103
+#define m4VelCRaw	P104
+
+#define m1MOVE P4701
+#define m1MRES P4801
+#define m1PoffUsr  P4901
+#define m1X0Usr P5001
+#define m2MOVE P4702
+#define m2MRES P4802
+#define m2PoffUsr  P4902
+#define m2X0Usr P5002
+#define m3MOVE P4703
+#define m3MRES P4803
+#define m3PoffUsr  P4903
+#define m3X0Usr P5003
+#define m4MOVE P4704
+#define m4MRES P4804
+#define m4PoffUsr  P4904
+#define m4X0Usr P5004
+#define m1PosCUsr (m1MRES*m1PosCRaw+m1PoffUsr)
+#define m2PosCUsr (m2MRES*m2PosCRaw+m2PoffUsr)
+#define m3PosCUsr (m3MRES*m3PosCRaw+m3PoffUsr)
+#define m4PosCUsr (m4MRES*m4PosCRaw+m4PoffUsr)
+#define m1PinvUsr Q228
+#define m2PinvUsr Q229
+#define m3PinvUsr Q230
+#define m4PinvUsr Q231
+#define m1PrbvUsr (m1MRES*m162/(I108*32)+m1PoffUsr)
+#define m2PrbvUsr (m2MRES*m262/(I208*32)+m2PoffUsr)
+#define m3PrbvUsr (m3MRES*m362/(I308*32)+m3PoffUsr)
+#define m4PrbvUsr (m4MRES*m462/(I408*32)+m4PoffUsr)
+#define XrbvUsr Q87
+#define YrbvUsr Q88
+#define ZrbvUsr Q89
+
+#define ax1OffUsr Q496
+#define ax2OffUsr Q497
+#define ax3OffUsr Q498
+
+#define ax1HLMUsr Q506
+#define ax2HLMUsr Q507
+#define ax3HLMUsr Q508
+
+#define ax1LLMUsr Q486
+#define ax2LLMUsr Q487
+#define ax3LLMUsr Q488
+
+; #define	SinYTheta Q401	
+; #define	CosYTheta Q402	
+
+M5104->D:$002004
+M5204->D:$002104
+M5304->D:$002204
+M5404->D:$002304
+M5504->D:$002404
+M5604->D:$002504
+M5704->D:$002604
+M5804->D:$002704

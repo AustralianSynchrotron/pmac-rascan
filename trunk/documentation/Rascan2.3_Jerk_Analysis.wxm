@@ -1,0 +1,69 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.08.1+git ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+In the following, variables are considered positive for the sake of software implemenation. 
+Particulary, consider the acceleration and jerk signs are reversed in formulas so that the 
+variables always take positive values
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f_v1Out: v1Out = v1Scan-v1Diff;
+a1In = -2*(v1Out-v1Scan)/tIn;
+f_a1In: subst(f_v1Out,%);
+(0 - v1Out) =-a1In*tOut+(a1In-a1Out)*tOut/2;
+eq_3:  subst([f_a1In,f_v1Out],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f_tOut:factor(solve([eq_3],[tOut])[1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+j1In = -(-a1In-0)/tIn;
+f_J1In: subst(f_a1In,%);
+f_j1In: solve(%,v1Diff);
+j1Out = (-a1Out +a1In)/tOut;
+f_j1Out:ratsimp(subst([f_tOut,f_v1Out,f_a1In],%));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(f_j1Out,[v1Diff]);
+radcan(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+What actually seems to work is -v1Diff instead of v1Diff... no explanations yet
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f_a1Out: solve(f_tOut,[a1Out]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* d1Out is calculated in RSCN PVT_Component.wxm section 4.6 */
+rscn_d1Out:d1Out=(4*tIn*(v1Diff+a1Max*tIn)*(v1Scan-v1Diff)^2)/(3*(2*v1Diff+a1Max*tIn)^2);
+subst(v1Scan=v1Out+v1Diff,%);
+f_d1Out: subst([a1Max=a1Out],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+
+solve(f_d1Out,a1Out);
+f_a1Out_min: subst([a1Out=a1Out_min,d1Out=d1OutHDM],%[2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([v1Diff=0,v1Out =4,d1OutHDM=0.1,tIn=0.0296],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([v1Diff=0,v1Out =4,d1OutHDM=0.1],f_d1Out);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

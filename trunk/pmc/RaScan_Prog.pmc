@@ -1,0 +1,294 @@
+#include "RaScan_Interface_def.pmc"
+#include "RaScan_CS_def.pmc"
+
+
+;;;============== RasaterScan Trajectory Definitions ==================
+;;== Scan definition
+
+#define XSpanFunc	d1Span+lineN*0
+
+#define X0Func		(lineN % 2)*d1SpanOBS +(2*(lineN % 2)-1)*d1Out + (d1Centre-d1SpanOBS/2) - ax1OffUsr;
+
+#define v1OutFunc	lineDir*v1Out;
+;#define XPassFunc	v1OutFunc*(tOut)/1.5
+;#define YVelFunc	d2Step/(tOut);
+#define pY0Func		d2Step*(lineN-1/2)+d2Start-ax2OffUsr;
+#define lineDirFunc	1-2*(lineN % 2);
+
+A; abort
+;Undefine All 
+END Gather 
+DEL Gather 
+DEL Rotary
+I5 = 0 ; Disable ALL PLCs
+
+;----------------------------------------
+
+;;;============ EXECUTE ==================
+open prog 20 clear
+
+	
+N10 ;stResetting
+	devState=stResetting
+	devCMD=stStandby
+	;lineN=0-1
+	devError=erNONE
+	;lineN=lineN+1
+N20 ;stStandby
+	devState=stStandby
+	if (devError=erNONE)
+		devError=erStandby
+	endif
+
+	while (devCMD!=stReady) 
+		if (devCMD=stTerminated)
+			GOTO40
+		endif
+	endwhile
+
+	
+	devState=stCompiling
+	devError=erNONE
+
+	d2Span=d2Step*(lineEnd-0)
+
+	lineDir=lineDirFunc
+
+	tOut=2*v1Out/a1HLM
+;AutoCorrections: 0.0050
+
+	if (tOut < 0.005)
+		tOut=0.005
+	endif
+		
+	if (tOut<tOutLLM-0.00111)
+		tEdge=tOutLLM - tOut
+	else
+		tEdge=0
+	endif
+
+	;Now calculate ax2 traj based on ax1 traj and additional ESkip time
+	;Minimum ax2Acc to make the minimum ISkip transition
+	dum=abs((6*d2Step)/((tOut+tInLLM)*(4*tOut+2*tInLLM+3*tEdge)))
+
+	if (abs(a2HLM) > dum)
+		;set ax2Acc to match tInLLM
+		a2Max=dum
+	else
+		;Set ax2Acc to max and let tIn be calculated
+		a2Max=a2HLM
+	endif
+	
+	if (d2Step> 0)
+		a2Max=abs(a2Max)
+	else
+		a2Max=-abs(a2Max)
+	endif
+
+	ptau=(2*tOut+3*tEdge)/4
+	pdelta=d2Step/a2Max
+	tIn=sqrt(ptau*ptau+3*pdelta)-ptau-tOut
+
+	if (tIn < tInLLM-0.001)
+		devError=erERROR8
+	endif
+
+	a1In=v1Delta/tIn
+	
+	if (a1In > a1HLM) 
+		devError=era1In
+	endif
+
+	d1Out=v1Out*tOut/1.5
+	v1Scan=v1Out+v1Delta
+
+	if (v1Scan < 0.001) 
+		devError=erv1Delta
+		v1Scan=v1Out
+	endif
+	
+	d1In=tIn*(v1Out+v1Scan)/2
+	d2In=tIn*tIn*a2Max/6
+	v2In=tIn*a2Max/2
+	v2Out=v2In+tOut*a2Max/2
+	d2Out=(tOut*v2In)+(tOut*tOut*a2Max)/3
+	
+	d1SpanOBS=d1Span
+	
+	tMid=(d1SpanOBS-2*d1In)/v1Scan
+	lineSubEnd=0
+	if (tMid > tMax)
+		while (tMid > tMax)
+			lineSubEnd=lineSubEnd+1 
+			tMid=tMid - tMax
+		endwhile
+		;now if tMid is too small, add one tMax to tMid and deduct one from subsegments
+		if(tMid < tMin)
+			tMid=tMid+tMax
+			lineSubEnd=lineSubEnd-1
+		endif
+	endif
+	;tMid should be less than PVT acceptable limit 
+	
+	if (tMid > 4.095)
+		devError=erTrjBuilder
+	endif
+
+	if (tMid < 0.002)
+		devError=erd1In
+	endif
+
+	if (tIn > 4.095)
+		devError=erTrjBuilder
+	endif
+
+	if (tOut > 4.095)
+		devError=erTrjBuilder
+	endif
+
+	if (tEdge > 4.095)
+		devError=erTrjBuilder
+	endif
+
+	if (d1SpanOBS<2*d1In)
+		devError=erd1In
+	endif
+	
+	;Check Boundaries and SOFT limits. If Inconsistent then
+	
+	pX0= d1Out + (d1Centre+d1SpanOBS/2);
+	if (pX0> ax1HLMUsr)
+		devError=erRange1
+	endif
+	
+	pX0= -d1Out + (d1Centre-d1SpanOBS/2);
+	if (pX0< ax1LLMUsr)
+		devError=erRange1
+	endif
+
+	d2Edge = d2Step-2*d2In-2*d2Out
+
+	pY0=d2Step*(lineN-1/2)+d2Start+d2Edge/2
+	pY1=d2Step*(lineEnd+1/2)+d2Start-d2Edge/2
+	
+	if (d2Step < 0)
+		if ( pY0 > ax2HLMUsr)
+			devError=erRange2
+		endif
+		if ( pY1 < ax2LLMUsr)
+			devError=erRange2
+		endif
+	else
+		if ( pY1 > ax2HLMUsr)
+			devError=erRange2
+		endif
+		if ( pY0 < ax2LLMUsr)
+			devError=erRange2
+		endif
+	endif
+
+	;devError=devError+1 ;DEBUG CODE
+	
+	if (devError=erNONE)
+
+		devState=stReady
+		while (devCMD!=stSet) 
+			if (devCMD=stStandby)
+				GOTO20
+			else
+				if (devCMD=stTerminated)
+					GOTO40
+				endif
+			endif
+		endwhile
+
+		devState=stSetting
+		
+		pX0=X0Func
+
+		;first pass
+		ABS RAPID X (pX0) Y (pY0); Decel Pass ORIGIN is the outer pass point
+;		
+	else ; forced stStandby
+		devCMD=stStandby
+		GOTO20 ;retry setting up
+	endif
+
+; Running.......
+N30 
+	devState=stSet
+	while (devCMD!=stRunning) 
+		if (devCMD=stStandby)
+			GOTO20
+		else
+			if (devCMD=stTerminated)
+				GOTO40
+			endif
+		endif
+	endwhile  ;in stSet, waiting for stRunning or AbortState
+	devState=stRunning
+
+	while (lineN<lineEnd) ;how to break the loop/be able to continue?
+		; Inner scan loop raster direction: 1 is forward and -1 is reverse
+		devState=stRunning
+
+		INC PVT (tOut*1000) X (lineDir*d1Out): (lineDir*v1Out) Y (d2Out):(v2In);
+
+		INC PVT (tIn*1000) X (lineDir*d1In): (lineDir*v1Scan) Y (d2In):(0); Post Skip Move
+
+		INC PVT (tMid*1000) X (lineDir*tMid*v1Scan): (lineDir*v1Scan) Y (0):(0); Skim
+		lineSubN=0
+		while (lineSubN < lineSubEnd)
+
+			INC PVT (tMax*1000) X (lineDir*tMax*v1Scan): (lineDir*v1Scan) Y (0):(0); Skim
+			lineSubN=lineSubN+1
+			
+		endwhile
+
+		INC PVT (tIn*1000) X (lineDir*d1In): (lineDir*v1Out) Y (d2In):(v2In); Pre Skip Move
+
+		lineN=lineN+1
+		lineDir=lineDirFunc
+		
+		INC PVT (tOut*1000) X (-lineDir*d1Out): (0) Y (d2Out):(v2Out); Decel Skip
+
+		if (tEdge>0)
+			INC PVT (tEdge*1000) X (0):(0) Y (d2Step-2*d2In-2*d2Out):(v2Out); EdgeSkip move for Y catchup 
+		endif
+
+		if (devCMD=stStandby)
+			GOTO20
+		else
+			if (devCMD=stTerminated)
+				GOTO40
+			else
+				if (devCMD=stSet)
+					GOTO30
+				endif
+			endif
+		endif
+
+	endwhile
+
+	; forced stStandby
+	devCMD=stStandby
+	devState=stStandby
+	GOTO20 ;retry setting up
+
+
+	; Stopping.....	
+N40
+	devState=stTerminated
+	; to flag the CS to re-sync its setpoint with the actual position NOW
+	; this won't work if the motion program is ternminated by pmac due to abort
+	m1MOVE=1
+	m2MOVE=1
+	m3MOVE=1
+	m4MOVE=1
+;Finish: stFault or Aborting or Terminating
+Close ; Close program buffer
+
+;----------------------------------------------------------
+I15 =  0  ;Deg (not Rad) Control for User Trig. Functions
+i5350=1
+I5 = 3 ; Enable Background PLCs

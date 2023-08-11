@@ -1,0 +1,47 @@
+- {
+    D1_CENTRE: '70.0', D2_START: '50.0', 
+    V1_SCANHLM: '200', V1_SCANLLM: '0.2', D2_TOLRATIO: '0.25', 
+
+    D1_SPAN: '4.5300', 
+    D1_IN_HLM: '3.0', 
+    D1_OUTHDM: '0.02',
+    D2_STEP: '0.01',
+    
+    LINE_END: '10', LINE_N: '0', 
+  }
+
+- {
+    D1_CENTRE: '70.0', D2_START: '50.0', 
+    V1_SCANHLM: '200', V1_SCANLLM: '0.2', D2_TOLRATIO: '0.25', 
+
+    D1_SPAN: '4.5300', 
+    D1_IN_HLM: '3.0', 
+    D1_OUTHDM: '1',
+    D2_STEP: '0.002',
+    
+    LINE_END: '10', LINE_N: '0', 
+  }
+
+- {
+    D1_CENTRE: '70.0', D2_START: '50.0', 
+    V1_SCANHLM: '200', V1_SCANLLM: '0.2', D2_TOLRATIO: '0.25', 
+
+    D1_SPAN: '4.5300', 
+    D1_IN_HLM: '3.0', 
+    D1_OUTHDM: '1',
+    D2_STEP: '0.02',
+    
+    LINE_END: '10', LINE_N: '0', 
+  }
+
+- {
+    D1_CENTRE: '70.0', D2_START: '50.0', 
+    V1_SCANHLM: '200', V1_SCANLLM: '0.2', D2_TOLRATIO: '0.25', 
+
+    D1_SPAN: '4.5300', 
+    D1_IN_HLM: '3.0', 
+    D1_OUTHDM: '0.1',
+    D2_STEP: '0.002',
+    
+    LINE_END: '10', LINE_N: '0', 
+  }
