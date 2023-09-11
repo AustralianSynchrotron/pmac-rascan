@@ -14,12 +14,11 @@ RASCAN is a software for running time-optimized continuous-motion fly scanning. 
 * Documentation includes some mathematical and modelling used for the Solver
 * m-files used  for modelling of the whole system are also provided 
 
-## hints for users!
+## Quick hints for users
 
-* this package is not streamlined for public use, but shared with the best intent of the material to be useful
-* if you wish to look at the Solver: trunk\midLayer\rascanSolveIt.py
-* an example of an scan control python script if you wish to see how the full system works: trunk\midLayer\rascanScanSample.py
-* both of which depend on epics and trunk\midLayer\rascanLib.py
+* RASCAN Solver script is here: trunk\midLayer\rascanSolveIt.py
+* an example of a scan control python script to help demonstrate the system flow is here: trunk\midLayer\rascanScanSample.py
+both of them need epics and trunk\midLayer\rascanLib.py
 
 ## License
 
@@ -27,16 +26,16 @@ Copyright (c) 2017 Australian Synchrotron
 
 This package is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
-Licence as published by the Free Software Foundation; either
-version 2.1 of the Licence, or (at your option) any later version.
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
 
 This package is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public Licence for more details.
+Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-Licence along with this package; if not, write to the Free Software
+License along with this package; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ## Contact
